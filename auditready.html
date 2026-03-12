@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuditReady — ISO 27001:2022</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #f0f4f8;
+  --bg2:      #e8edf3;
+  --surface:  #ffffff;
+  --surface2: #f6f8fb;
+  --border:   #d8e0ea;
+  --border2:  #bfcbdb;
+  --accent:   #2e6da4;
+  --accent-l: #4a8dc7;
+  --accent-dim:    rgba(46,109,164,0.10);
+  --accent-dimmer: rgba(46,109,164,0.05);
+  --teal:     #0d7377;
+  --teal-dim: rgba(13,115,119,0.10);
+  --warn:     #b45309;
+  --warn-dim: rgba(180,83,9,0.09);
+  --danger:   #b91c1c;
+  --danger-dim:rgba(185,28,28,0.08);
+  --success:  #0d7377;
+  --success-dim:rgba(13,115,119,0.10);
+  --purple:   #6d28d9;
+  --text:     #1e293b;
+  --text2:    #475569;
+  --text3:    #94a3b8;
+  --radius:   10px;
+  --sh:  0 1px 3px rgba(15,40,80,0.07), 0 2px 10px rgba(15,40,80,0.05);
+  --sh2: 0 4px 20px rgba(15,40,80,0.09), 0 1px 4px rgba(15,40,80,0.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.65;min-height:100vh}
+
+/* ── HEADER ─────────────────────────────────────── */
+header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:60px;box-shadow:0 1px 0 var(--border),0 2px 8px rgba(15,40,80,0.04)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--accent),var(--accent-l));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;box-shadow:0 2px 6px rgba(46,109,164,0.28)}
+.logo-text{font-family:'Lora',serif;font-size:20px;color:var(--text);letter-spacing:-0.3px}
+.logo-text span{color:var(--accent)}
+.logo-tag{font-size:11px;font-weight:500;color:var(--text3);background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2px 10px;letter-spacing:0.3px}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border-radius:7px;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all .17s}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.btn-ghost:hover{background:var(--surface);color:var(--text);border-color:var(--border2)}
+.btn-danger{background:var(--danger-dim);color:var(--danger);border:1px solid rgba(185,28,28,0.15)}
+.btn-danger:hover{background:rgba(185,28,28,0.14)}
+
+/* ── HERO ───────────────────────────────────────── */
+.hero{padding:52px 32px 32px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start}
+.hero-eyebrow{font-size:12px;font-weight:600;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;margin-bottom:10px}
+.hero-title{font-family:'Lora',serif;font-size:36px;line-height:1.18;letter-spacing:-0.4px;color:var(--text);margin-bottom:12px}
+.hero-title em{color:var(--accent);font-style:italic}
+.hero-sub{color:var(--text2);font-size:15px;max-width:460px;line-height:1.78}
+
+/* ── DASHBOARD ──────────────────────────────────── */
+.dashboard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;min-width:310px;box-shadow:var(--sh2)}
+.dash-title{font-size:10px;font-weight:600;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-bottom:14px}
+.score-ring-wrap{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+.score-ring{position:relative;width:86px;height:86px;flex-shrink:0}
+.score-ring svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--border2);stroke-width:7}
+.ring-fill{fill:none;stroke:var(--accent);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)}
+.score-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-pct{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--accent);line-height:1}
+.score-pct-sub{font-size:10px;color:var(--text3)}
+.score-rows{flex:1;display:flex;flex-direction:column;gap:7px}
+.score-row{display:flex;justify-content:space-between;align-items:center}
+.score-row-label{font-size:12px;color:var(--text2)}
+.score-row-val{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text)}
+.dash-divider{height:1px;background:var(--border);margin:14px 0}
+.theme-bars{display:flex;flex-direction:column;gap:9px}
+.theme-bar-item{display:flex;flex-direction:column;gap:3px}
+.theme-bar-hdr{display:flex;justify-content:space-between}
+.theme-bar-name{font-size:11px;color:var(--text2)}
+.theme-bar-pct{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text3)}
+.theme-bar-track{height:4px;background:var(--border2);border-radius:3px;overflow:hidden}
+.theme-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.bar-org{background:linear-gradient(90deg,#2e6da4,#5a9fd6)}
+.bar-ppl{background:linear-gradient(90deg,#0d7377,#14a8ad)}
+.bar-phy{background:linear-gradient(90deg,#b45309,#d97706)}
+.bar-tec{background:linear-gradient(90deg,#6d28d9,#8b5cf6)}
+
+/* ── MAIN / TABS ────────────────────────────────── */
+.main{max-width:1200px;margin:0 auto;padding:0 32px}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:26px;overflow-x:auto}
+.tab{padding:11px 17px;font-size:13px;font-weight:500;color:var(--text3);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .17s;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.tab:hover{color:var(--text2);background:var(--bg2)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-count{background:var(--bg2);border-radius:10px;padding:2px 7px;font-size:11px;font-family:'JetBrains Mono',monospace;border:1px solid var(--border)}
+.tab.active .tab-count{background:var(--accent-dim);color:var(--accent);border-color:rgba(46,109,164,0.2)}
+
+/* ── SEARCH / FILTER ────────────────────────────── */
+.search-wrap{margin-bottom:14px;position:relative}
+.search-input{width:100%;padding:10px 16px 10px 40px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color .17s,box-shadow .17s}
+.search-input:focus{border-color:rgba(46,109,164,0.5);box-shadow:0 0 0 3px rgba(46,109,164,0.08)}
+.search-input::placeholder{color:var(--text3)}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;pointer-events:none}
+.filter-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.filter-btn{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .14s}
+.filter-btn:hover{background:var(--bg2)}
+.filter-btn.active{background:var(--accent-dim);border-color:rgba(46,109,164,0.3);color:var(--accent)}
+
+/* ── CONTROL CARDS ──────────────────────────────── */
+.controls-list{display:flex;flex-direction:column;gap:10px;padding-bottom:80px}
+.control-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .2s,box-shadow .2s;box-shadow:var(--sh)}
+.control-card:hover{box-shadow:var(--sh2)}
+.control-card.complete{border-color:rgba(13,115,119,0.28)}
+.control-card.partial{border-color:rgba(180,83,9,0.28)}
+.control-header{display:flex;align-items:center;gap:12px;padding:13px 17px;cursor:pointer;user-select:none}
+.control-header:hover{background:var(--surface2)}
+.control-id{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);min-width:46px}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--border2)}
+.complete .status-dot{background:var(--success);box-shadow:0 0 6px rgba(13,115,119,0.35)}
+.partial .status-dot{background:var(--warn);box-shadow:0 0 6px rgba(180,83,9,0.35)}
+.control-title{flex:1;font-size:14px;font-weight:500;color:var(--text)}
+.ctrl-prog{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);white-space:nowrap}
+.complete .ctrl-prog{color:var(--success)}
+.partial .ctrl-prog{color:var(--warn)}
+.chevron{color:var(--text3);transition:transform .2s;font-size:10px;flex-shrink:0}
+.control-card.open .chevron{transform:rotate(180deg)}
+.control-body{display:none;padding:0 17px 17px;border-top:1px solid var(--border);background:var(--surface2)}
+.control-card.open .control-body{display:block}
+.control-desc{font-size:13px;color:var(--text2);line-height:1.72;margin:13px 0 15px;padding-left:12px;border-left:2px solid var(--border2)}
+.ev-label{font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.ev-list{display:flex;flex-direction:column;gap:6px}
+.ev-item{display:flex;align-items:flex-start;gap:11px;padding:10px 13px;border-radius:8px;background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:all .14s}
+.ev-item:hover{border-color:var(--border2);box-shadow:0 1px 4px rgba(15,40,80,0.05)}
+.ev-item.checked{background:var(--accent-dimmer);border-color:rgba(46,109,164,0.22)}
+.ev-cb{width:16px;height:16px;border-radius:4px;flex-shrink:0;margin-top:2px;border:1.5px solid var(--border2);background:var(--surface);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.ev-item.checked .ev-cb{background:var(--accent);border-color:var(--accent);box-shadow:0 1px 5px rgba(46,109,164,0.28)}
+.ev-check{display:none;color:#fff;font-size:10px;font-weight:800}
+.ev-item.checked .ev-check{display:block}
+.ev-title{font-size:13px;color:var(--text);font-weight:500}
+.ev-detail{font-size:12px;color:var(--text2);margin-top:2px}
+.ev-example{font-size:11px;color:var(--accent);margin-top:3px;font-family:'JetBrains Mono',monospace;opacity:.8}
+
+/* ── GAP REPORT ─────────────────────────────────── */
+.gap-section{padding-bottom:80px}
+.gap-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+.gap-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--sh)}
+.gap-stat-val{font-family:'Lora',serif;font-size:32px;line-height:1;margin-bottom:4px}
+.gap-stat-label{font-size:12px;color:var(--text2)}
+.stat-red .gap-stat-val{color:var(--danger)}
+.stat-yellow .gap-stat-val{color:var(--warn)}
+.stat-green .gap-stat-val{color:var(--success)}
+.gap-items{display:flex;flex-direction:column;gap:9px}
+.gap-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px 17px;box-shadow:var(--sh)}
+.gap-item.gap-crit{border-left:3px solid var(--danger)}
+.gap-item.gap-part{border-left:3px solid var(--warn)}
+.gap-item-hdr{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.gap-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.8px}
+.badge-crit{background:var(--danger-dim);color:var(--danger)}
+.badge-part{background:var(--warn-dim);color:var(--warn)}
+.gap-item-id{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.gap-item-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:8px}
+.gap-miss{font-size:12px;color:var(--text2);margin:5px 0;padding-left:14px;position:relative}
+.gap-miss::before{content:'→';position:absolute;left:0;color:var(--danger)}
+.gap-part .gap-miss::before{color:var(--warn)}
+.gap-miss-ex{color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:11px}
+.gap-item.gap-comp{border-left:3px solid var(--success)}
+.badge-comp{background:var(--success-dim);color:var(--success)}
+.gap-comp-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.gap-comp-toggle:hover .gap-item-title{color:var(--accent)}
+.gap-ev-collected{display:none;margin-top:10px;flex-direction:column;gap:5px}
+.gap-comp.open .gap-ev-collected{display:flex}
+.gap-ev-row{display:flex;align-items:flex-start;gap:9px;padding:8px 11px;border-radius:7px;background:var(--surface2);border:1px solid var(--border)}
+.gap-ev-tick{color:var(--success);font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px}
+.gap-ev-text{flex:1}
+.gap-ev-title{font-size:12px;color:var(--text);font-weight:500}
+.gap-ev-ex{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.gap-section-header{display:flex;align-items:center;gap:10px;margin:22px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.gap-section-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-crit{background:var(--danger)}
+.dot-part{background:var(--warn)}
+.dot-comp{background:var(--success)}
+.gap-section-label{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:.5px}
+.gap-section-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:2px 8px}
+.gap-comp-chevron{color:var(--text3);font-size:10px;transition:transform .2s;flex-shrink:0}
+.gap-comp.open .gap-comp-chevron{transform:rotate(180deg)}
+
+/* ── OVERLAP SECTION ────────────────────────────── */
+.overlap-section{padding-bottom:80px}
+.overlap-intro{display:flex;align-items:flex-start;gap:16px;background:linear-gradient(135deg,rgba(46,109,164,0.06),rgba(13,115,119,0.04));border:1px solid rgba(46,109,164,0.18);border-radius:12px;padding:20px 22px;margin-bottom:22px}
+.overlap-intro-icon{font-size:28px;flex-shrink:0;margin-top:2px;color:var(--accent);opacity:.8}
+.overlap-intro-text h3{font-family:'Lora',serif;font-size:18px;color:var(--text);margin-bottom:5px}
+.overlap-intro-text p{font-size:13px;color:var(--text2);line-height:1.65}
+.overlap-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.overlap-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px}
+.overlap-stat-icon{font-size:22px;flex-shrink:0;color:var(--accent);opacity:.7}
+.overlap-stat-val{font-family:'Lora',serif;font-size:24px;line-height:1;color:var(--accent)}
+.overlap-stat-label{font-size:11px;color:var(--text2);margin-top:1px}
+.overlap-cards{display:flex;flex-direction:column;gap:10px}
+.ov-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--sh);transition:box-shadow .2s}
+.ov-card:hover{box-shadow:var(--sh2)}
+.ov-card-header{display:flex;align-items:center;gap:13px;padding:14px 17px;cursor:pointer;user-select:none}
+.ov-card-header:hover{background:var(--surface2)}
+.ov-cat-icon{font-size:20px;flex-shrink:0;width:38px;height:38px;border-radius:9px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;color:var(--accent)}
+.ov-cat-main{flex:1;min-width:0}
+.ov-cat-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
+.ov-cat-sub{font-size:12px;color:var(--text3)}
+.ov-card-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.ov-pct-block{text-align:right}
+.ov-pct{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600}
+.ov-pct-label{font-size:10px;color:var(--text3)}
+.ov-ctrl-pill{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid}
+.ov-card .chevron{flex-shrink:0;color:var(--text3);transition:transform .2s;font-size:10px}
+.ov-card.open .chevron{transform:rotate(180deg)}
+.ov-card-body{display:none;border-top:1px solid var(--border);background:var(--surface2);padding:16px 17px}
+.ov-card.open .ov-card-body{display:block}
+.ov-tip{font-size:12px;color:var(--text2);padding:10px 13px;background:rgba(46,109,164,0.06);border:1px solid rgba(46,109,164,0.15);border-radius:8px;margin-bottom:14px;line-height:1.6}
+.ov-tip strong{color:var(--accent)}
+.ov-ctrl-group{margin-bottom:14px}
+.ov-ctrl-group:last-child{margin-bottom:0}
+.ov-ctrl-group-header{display:flex;align-items:center;gap:7px;padding:6px 0;margin-bottom:6px;border-bottom:1px solid var(--border)}
+.ov-ctrl-badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600;background:var(--accent-dim);color:var(--accent)}
+.ov-ctrl-badge.badge-ppl{background:var(--teal-dim);color:var(--teal)}
+.ov-ctrl-badge.badge-phy{background:var(--warn-dim);color:var(--warn)}
+.ov-ctrl-badge.badge-tec{background:rgba(109,40,217,0.08);color:var(--purple)}
+.ov-ctrl-name{font-size:13px;font-weight:500;color:var(--text)}
+.ov-ev-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 11px;border-radius:7px;background:var(--surface);border:1px solid var(--border);margin-bottom:5px;transition:border-color .14s}
+.ov-ev-row:last-child{margin-bottom:0}
+.ov-ev-row:hover{border-color:var(--border2)}
+.ov-ev-title{font-size:12px;color:var(--text);font-weight:500;flex:1}
+.ov-ev-ex{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:1px}
+.status-pill{font-size:10px;font-weight:600;padding:3px 9px;border-radius:12px;white-space:nowrap;flex-shrink:0}
+.pill-done{background:var(--success-dim);color:var(--success)}
+.pill-miss{background:var(--danger-dim);color:var(--danger)}
+
+/* ── SHARED ─────────────────────────────────────── */
+.hidden{display:none!important}
+.empty-state{text-align:center;padding:70px 20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.empty-icon{font-size:44px;opacity:.3}
+.empty-title{font-family:'Lora',serif;font-size:20px;color:var(--text2)}
+.empty-sub{font-size:13px;color:var(--text3);max-width:340px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:#fff;padding:10px 22px;border-radius:30px;font-size:13px;box-shadow:var(--sh2);transition:transform .3s ease;z-index:999;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ── SOA SECTION ────────────────────────────────── */
+.soa-section{padding-bottom:80px}
+.soa-intro{display:flex;align-items:flex-start;gap:16px;background:linear-gradient(135deg,rgba(109,40,217,0.05),rgba(46,109,164,0.04));border:1px solid rgba(109,40,217,0.16);border-radius:12px;padding:20px 22px;margin-bottom:22px}
+.soa-intro-icon{font-size:28px;flex-shrink:0;margin-top:2px;color:var(--purple);opacity:.8}
+.soa-intro-text h3{font-family:'Lora',serif;font-size:18px;color:var(--text);margin-bottom:5px}
+.soa-intro-text p{font-size:13px;color:var(--text2);line-height:1.65}
+.soa-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.soa-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--sh);text-align:center}
+.soa-stat-val{font-family:'Lora',serif;font-size:28px;line-height:1;margin-bottom:3px}
+.soa-stat-label{font-size:11px;color:var(--text2)}
+.soa-stat-val.v-applicable{color:var(--accent)}
+.soa-stat-val.v-na{color:var(--text3)}
+.soa-stat-val.v-justified{color:var(--purple)}
+.soa-stat-val.v-total{color:var(--text)}
+.soa-theme-block{margin-bottom:28px}
+.soa-theme-header{display:flex;align-items:center;gap:10px;padding:10px 0;margin-bottom:10px;border-bottom:2px solid var(--border)}
+.soa-theme-icon{font-size:16px;color:var(--accent);display:flex;align-items:center}
+.soa-theme-title{font-size:14px;font-weight:600;color:var(--text)}
+.soa-theme-sub{font-size:12px;color:var(--text3);margin-left:auto;font-family:'JetBrains Mono',monospace}
+.soa-row{display:flex;align-items:flex-start;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;overflow:hidden;transition:box-shadow .15s}
+.soa-row:hover{box-shadow:var(--sh)}
+.soa-row.na{opacity:.6}
+.soa-row.na .soa-ctrl-title{text-decoration:line-through;color:var(--text3)}
+.soa-toggle-cell{display:flex;align-items:center;justify-content:center;padding:14px 14px;border-right:1px solid var(--border);cursor:pointer;flex-shrink:0;transition:background .14s;background:var(--surface2)}
+.soa-toggle-cell:hover{background:var(--bg2)}
+.soa-applicability-toggle{width:44px;height:24px;border-radius:12px;border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;background:var(--border2)}
+.soa-applicability-toggle.on{background:var(--accent)}
+.soa-applicability-toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.soa-applicability-toggle.on::after{transform:translateX(20px)}
+.soa-ctrl-info{flex:1;padding:12px 16px;cursor:pointer}
+.soa-ctrl-top{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.soa-ctrl-id{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.soa-ctrl-title{font-size:13px;font-weight:500;color:var(--text)}
+.soa-ctrl-desc{font-size:12px;color:var(--text2);line-height:1.5;display:none}
+.soa-row.expanded .soa-ctrl-desc{display:block;margin-top:6px}
+.soa-justification-cell{display:flex;align-items:center;padding:8px 12px;border-left:1px solid var(--border);flex-shrink:0;min-width:220px}
+.soa-na-badge{font-size:11px;font-weight:600;color:var(--text3);background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:3px 9px;white-space:nowrap}
+.soa-justification-input{width:100%;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface2);outline:none;resize:none;transition:border-color .15s;min-height:34px}
+.soa-justification-input:focus{border-color:rgba(109,40,217,.4);box-shadow:0 0 0 3px rgba(109,40,217,.06);background:#fff}
+.soa-justification-input::placeholder{color:var(--text3)}
+.soa-export-bar{display:flex;justify-content:flex-end;margin-bottom:16px}
+
+@media(max-width:820px){
+  .hero{grid-template-columns:1fr}
+  .dashboard{min-width:unset}
+  .hero-title{font-size:28px}
+  .gap-stats,.overlap-summary,.soa-stats{grid-template-columns:1fr 1fr}
+  header,.hero,.main{padding-left:16px;padding-right:16px}
+  .hdr-right .btn-ghost:first-child{display:none}
+  .soa-justification-cell{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">✓</div>
+    <span class="logo-text">Audit<span>Ready</span></span>
+    <span class="logo-tag">ISO 27001:2022</span>
+  </div>
+  <div class="hdr-right">
+    <button class="btn btn-ghost" onclick="saveProgress()">💾 Save</button>
+    <button class="btn btn-ghost" onclick="exportPDF()">📄 Export PDF</button>
+    <button class="btn btn-danger" onclick="resetAll()">↺ Reset</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div>
+    <div class="hero-eyebrow">ISO/IEC 27001:2022 · Annex A · All 93 Controls</div>
+    <div class="hero-title">Readiness &amp; <em>Gap Assessment</em></div>
+    <p class="hero-sub">Tick the evidence your organisation has in place. AuditReady identifies your compliance gaps and shows where a single piece of evidence satisfies multiple controls at once.</p>
+  </div>
+  <div class="dashboard">
+    <div class="dash-title">Overall Compliance</div>
+    <div class="score-ring-wrap">
+      <div class="score-ring">
+        <svg width="86" height="86" viewBox="0 0 86 86">
+          <circle class="ring-bg" cx="43" cy="43" r="35"/>
+          <circle class="ring-fill" id="ringFill" cx="43" cy="43" r="35" stroke-dasharray="219.9" stroke-dashoffset="219.9"/>
+        </svg>
+        <div class="score-label">
+          <span class="score-pct" id="scorePct">0%</span>
+          <span class="score-pct-sub">complete</span>
+        </div>
+      </div>
+      <div class="score-rows">
+        <div class="score-row"><span class="score-row-label">Controls complete</span><span class="score-row-val" id="scoreControls">0 / 93</span></div>
+        <div class="score-row"><span class="score-row-label">Evidence collected</span><span class="score-row-val" id="scoreEvidence">0</span></div>
+        <div class="score-row"><span class="score-row-label">Gaps remaining</span><span class="score-row-val" id="scoreGaps" style="color:var(--danger)">0</span></div>
+      </div>
+    </div>
+    <div class="dash-divider"></div>
+    <div class="theme-bars">
+      <div class="theme-bar-item">
+        <div class="theme-bar-hdr"><span class="theme-bar-name">Organisational (5.x)</span><span class="theme-bar-pct" id="pOrg">0%</span></div>
+        <div class="theme-bar-track"><div class="theme-bar-fill bar-org" id="bOrg" style="width:0%"></div></div>
+      </div>
+      <div class="theme-bar-item">
+        <div class="theme-bar-hdr"><span class="theme-bar-name">People (6.x)</span><span class="theme-bar-pct" id="pPpl">0%</span></div>
+        <div class="theme-bar-track"><div class="theme-bar-fill bar-ppl" id="bPpl" style="width:0%"></div></div>
+      </div>
+      <div class="theme-bar-item">
+        <div class="theme-bar-hdr"><span class="theme-bar-name">Physical (7.x)</span><span class="theme-bar-pct" id="pPhy">0%</span></div>
+        <div class="theme-bar-track"><div class="theme-bar-fill bar-phy" id="bPhy" style="width:0%"></div></div>
+      </div>
+      <div class="theme-bar-item">
+        <div class="theme-bar-hdr"><span class="theme-bar-name">Technological (8.x)</span><span class="theme-bar-pct" id="pTec">0%</span></div>
+        <div class="theme-bar-track"><div class="theme-bar-fill bar-tec" id="bTec" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('all',this)">All Controls <span class="tab-count">93</span></button>
+    <button class="tab" onclick="switchTab('org',this)">Organisational <span class="tab-count">37</span></button>
+    <button class="tab" onclick="switchTab('ppl',this)">People <span class="tab-count">8</span></button>
+    <button class="tab" onclick="switchTab('phy',this)">Physical <span class="tab-count">14</span></button>
+    <button class="tab" onclick="switchTab('tec',this)">Technological <span class="tab-count">34</span></button>
+    <button class="tab" onclick="switchTab('overlap',this)">Evidence Overlap <span class="tab-count" id="tc-overlap">—</span></button>
+    <button class="tab" onclick="switchTab('gaps',this)">Gap Report <span class="tab-count" id="tc-gaps">0</span></button>
+    <button class="tab" onclick="switchTab('soa',this)">Statement of Applicability <span class="tab-count" id="tc-soa">93</span></button>
+  </div>
+
+  <!-- CONTROLS PANEL -->
+  <div id="panelControls">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" type="text" placeholder="Search controls or evidence…" oninput="filterSearch(this.value)">
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('complete',this)">Complete</button>
+      <button class="filter-btn" onclick="setFilter('partial',this)">Partial</button>
+      <button class="filter-btn" onclick="setFilter('empty',this)">Not Started</button>
+    </div>
+    <div class="controls-list" id="controlsList"></div>
+  </div>
+
+  <!-- OVERLAP PANEL -->
+  <div id="panelOverlap" class="overlap-section hidden">
+    <div class="overlap-intro">
+      <div class="overlap-intro-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/><path d="M12 8.5a5 5 0 0 1 0 7"/><path d="M12 8.5a5 5 0 0 0 0 7"/></svg></div>
+      <div class="overlap-intro-text">
+        <h3>Evidence Reuse Opportunities</h3>
+        <p>The same piece of evidence often satisfies multiple ISO 27001 controls simultaneously. Collect it once, reference it everywhere — this view shows you where to focus for maximum audit efficiency.</p>
+      </div>
+    </div>
+    <div class="overlap-summary">
+      <div class="overlap-stat"><span class="overlap-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><div><div class="overlap-stat-val" id="ovTotal">—</div><div class="overlap-stat-label">Shared evidence themes</div></div></div>
+      <div class="overlap-stat"><span class="overlap-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></span><div><div class="overlap-stat-val" id="ovControls">—</div><div class="overlap-stat-label">Controls covered by overlaps</div></div></div>
+      <div class="overlap-stat"><span class="overlap-stat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span><div><div class="overlap-stat-val" id="ovDone">—</div><div class="overlap-stat-label">Themes fully collected</div></div></div>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" type="text" placeholder="Search evidence themes…" oninput="filterOverlap(this.value)">
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setOverlapFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setOverlapFilter('missing',this)">Not Collected</button>
+      <button class="filter-btn" onclick="setOverlapFilter('partial',this)">Partial</button>
+      <button class="filter-btn" onclick="setOverlapFilter('done',this)">Collected</button>
+    </div>
+    <div class="overlap-cards" id="overlapCards"></div>
+  </div>
+
+  <!-- GAP PANEL -->
+  <div id="panelGaps" class="gap-section hidden">
+    <div class="gap-stats">
+      <div class="gap-stat stat-red"><div class="gap-stat-val" id="gCrit">0</div><div class="gap-stat-label">No evidence collected</div></div>
+      <div class="gap-stat stat-yellow"><div class="gap-stat-val" id="gPart">0</div><div class="gap-stat-label">Partially evidenced</div></div>
+      <div class="gap-stat stat-green"><div class="gap-stat-val" id="gComp">0</div><div class="gap-stat-label">Fully evidenced</div></div>
+    </div>
+    <div class="gap-items" id="gapList"></div>
+  </div>
+
+  <!-- SOA PANEL -->
+  <div id="panelSoa" class="soa-section hidden">
+    <div class="soa-intro">
+      <div class="soa-intro-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+      <div class="soa-intro-text">
+        <h3>Statement of Applicability (SoA)</h3>
+        <p>ISO 27001 requires a Statement of Applicability listing all 93 Annex A controls, whether each is applicable, and justification for any exclusions. Toggle each control on or off, and add a brief justification for any controls marked as Not Applicable.</p>
+      </div>
+    </div>
+    <div class="soa-stats">
+      <div class="soa-stat"><div class="soa-stat-val v-total" id="soaTotal">93</div><div class="soa-stat-label">Total controls</div></div>
+      <div class="soa-stat"><div class="soa-stat-val v-applicable" id="soaApplicable">93</div><div class="soa-stat-label">Applicable</div></div>
+      <div class="soa-stat"><div class="soa-stat-val v-na" id="soaNa">0</div><div class="soa-stat-label">Not Applicable</div></div>
+      <div class="soa-stat"><div class="soa-stat-val v-justified" id="soaJustified">0</div><div class="soa-stat-label">NA with justification</div></div>
+    </div>
+    <div class="soa-export-bar">
+      <button class="btn btn-ghost" onclick="exportSoaPDF()">📄 Export SoA PDF</button>
+    </div>
+    <div id="soaList"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// ALL 93 ISO 27001:2022 CONTROLS
+// ═══════════════════════════════════════════════════
+const CONTROLS = [
+  // ── ORGANISATIONAL 5.1–5.37 ──
+  {id:"5.1",theme:"org",title:"Policies for information security",desc:"Information security policy and topic-specific policies shall be defined, approved, published and acknowledged.",ev:[
+    {t:"Approved Information Security Policy",d:"Signed by top management, version controlled",ex:"e.g. IS-POL-001 v2.1 signed by CISO/CEO"},
+    {t:"Topic-specific policies in place",d:"Password, BYOD, acceptable use, remote working",ex:"e.g. Password Policy, AUP, BYOD Policy, Remote Work Policy"},
+    {t:"Staff policy acknowledgement records",d:"Evidence staff have read and acknowledged all policies",ex:"e.g. signed forms or LMS completion records"},
+    {t:"Policy review schedule/register",d:"Annual or trigger-based review documented",ex:"e.g. policy register with last review and next review dates"},
+  ]},
+  {id:"5.2",theme:"org",title:"Information security roles and responsibilities",desc:"All information security responsibilities shall be defined and allocated.",ev:[
+    {t:"RACI matrix or IS responsibility chart",d:"Named owners for each IS domain",ex:"e.g. RACI chart in ISMS documentation"},
+    {t:"Job descriptions referencing IS duties",d:"HR job specs include security responsibilities",ex:"e.g. CISO, IT Manager, System Admin job descriptions"},
+    {t:"ISMS control ownership register",d:"Who owns which ISO 27001 controls",ex:"e.g. controls ownership spreadsheet"},
+  ]},
+  {id:"5.3",theme:"org",title:"Segregation of duties",desc:"Conflicting duties and areas of responsibility shall be segregated.",ev:[
+    {t:"Segregation of Duties (SoD) matrix",d:"Identifies and documents conflicting roles",ex:"e.g. SoD conflict matrix spreadsheet"},
+    {t:"Access configuration evidence of SoD",d:"System-level evidence conflicting roles not combined",ex:"e.g. IAM/AD role configuration screenshot"},
+    {t:"Compensating controls for SoD exceptions",d:"Where SoD not feasible, compensating controls documented",ex:"e.g. enhanced monitoring for roles with SoD conflicts"},
+  ]},
+  {id:"5.4",theme:"org",title:"Management responsibilities",desc:"Management shall require all personnel to apply information security in accordance with policy.",ev:[
+    {t:"Management sign-off on IS policies",d:"Evidence of active management approval",ex:"e.g. policy approval signatures, board meeting minutes"},
+    {t:"IS objectives approved by management",d:"Documented IS objectives reviewed by leadership",ex:"e.g. annual ISMS objectives approved by board"},
+    {t:"Management review meeting minutes",d:"IS discussed at executive/management level",ex:"e.g. board/exec meeting minutes with IS agenda items"},
+  ]},
+  {id:"5.5",theme:"org",title:"Contact with authorities",desc:"Contacts with relevant authorities shall be established and maintained.",ev:[
+    {t:"Authority contact list maintained",d:"Law enforcement, CERT, regulator contacts documented",ex:"e.g. NCSC, Action Fraud, ICO, sector regulator contact list"},
+    {t:"Procedure for contacting authorities",d:"When and how to engage relevant authorities",ex:"e.g. Incident Response Plan section on authority notification"},
+    {t:"Regulatory registration evidence",d:"Evidence of compliance with notification obligations",ex:"e.g. ICO registration certificate"},
+  ]},
+  {id:"5.6",theme:"org",title:"Contact with special interest groups",desc:"Contacts shall be maintained with special interest groups or security forums.",ev:[
+    {t:"Membership of IS forums or organisations",d:"ISAC, ISACA, (ISC)², BCS memberships",ex:"e.g. membership certificates or portal login evidence"},
+    {t:"Threat intelligence feed subscriptions",d:"Subscribed to threat feeds or security bulletins",ex:"e.g. NCSC alerts, FS-ISAC, CISA subscriptions"},
+  ]},
+  {id:"5.7",theme:"org",title:"Threat intelligence",desc:"Information relating to IS threats shall be collected and analysed.",ev:[
+    {t:"Threat intelligence process/procedure",d:"Documented process for collecting and acting on threat intel",ex:"e.g. Threat Intelligence SOP"},
+    {t:"Active threat intelligence feed subscriptions",d:"Named threat intelligence sources in use",ex:"e.g. MISP, Recorded Future, AlienVault OTX, NCSC feeds"},
+    {t:"Evidence of threat intel being actioned",d:"Meeting notes or change records driven by threat intel",ex:"e.g. security team threat report showing intel-driven actions"},
+  ]},
+  {id:"5.8",theme:"org",title:"Information security in project management",desc:"Information security shall be integrated into the organisation's project management.",ev:[
+    {t:"IS security gates in project methodology",d:"Security checkpoints in SDLC or project framework",ex:"e.g. Project initiation document with mandatory IS section"},
+    {t:"IS sign-off required at project go-live",d:"Security approval needed before deployment",ex:"e.g. go-live checklist requiring security sign-off"},
+    {t:"Project-level IS risk assessments",d:"IS risk assessment conducted per significant project",ex:"e.g. project DPIA or security risk assessment records"},
+  ]},
+  {id:"5.9",theme:"org",title:"Inventory of information and other associated assets",desc:"An inventory of information and other associated assets shall be developed and maintained.",ev:[
+    {t:"Asset inventory/register",d:"Comprehensive list of all information assets",ex:"e.g. CMDB, asset register, or ServiceNow CMDB"},
+    {t:"Asset owners assigned for all assets",d:"Named owner for every asset in the register",ex:"e.g. asset register with Owner column fully populated"},
+    {t:"Asset classification recorded in inventory",d:"Confidentiality classification assigned per asset",ex:"e.g. Classification column: Public/Internal/Confidential/Restricted"},
+  ]},
+  {id:"5.10",theme:"org",title:"Acceptable use of information and associated assets",desc:"Rules for acceptable use and procedures for handling information shall be identified and implemented.",ev:[
+    {t:"Acceptable Use Policy (AUP)",d:"Formal AUP covering IT systems, data and assets",ex:"e.g. AUP-001 covering email, internet, software use"},
+    {t:"AUP acknowledgement records",d:"Evidence all staff have read and accepted the AUP",ex:"e.g. HR onboarding sign-off records, LMS completion"},
+    {t:"Data handling procedures by classification",d:"How to handle data at each classification level",ex:"e.g. Data Handling Guide: Public vs Confidential vs Restricted"},
+  ]},
+  {id:"5.11",theme:"org",title:"Return of assets",desc:"Personnel shall return all organisation assets upon termination or change of employment.",ev:[
+    {t:"Leavers offboarding checklist with asset return",d:"Documented offboarding requiring asset return",ex:"e.g. HR offboarding checklist with IT asset return section"},
+    {t:"Asset return confirmation receipts",d:"Signed confirmation that assets were returned",ex:"e.g. equipment return form signed by leaver and IT"},
+  ]},
+  {id:"5.12",theme:"org",title:"Classification of information",desc:"Information shall be classified according to its value, legal requirements, sensitivity and criticality.",ev:[
+    {t:"Information classification scheme/policy",d:"Defined classification tiers with criteria",ex:"e.g. Data Classification Policy: Public, Internal, Confidential, Restricted"},
+    {t:"Classification applied to information assets",d:"Evidence data assets are labelled/classified",ex:"e.g. SharePoint sensitivity labels, email classification plugin"},
+  ]},
+  {id:"5.13",theme:"org",title:"Labelling of information",desc:"Appropriate procedures for information labelling shall be developed and implemented.",ev:[
+    {t:"Labelling procedures documented",d:"How and where to apply labels to documents and data",ex:"e.g. document template with classification header/footer"},
+    {t:"Technical labelling controls enabled",d:"System-level labelling in place",ex:"e.g. Microsoft Purview / MIP sensitivity labels screenshot"},
+  ]},
+  {id:"5.14",theme:"org",title:"Information transfer",desc:"Information transfer rules, procedures or agreements shall be in place for all types of transfer.",ev:[
+    {t:"Data transfer policy/procedure",d:"Approved secure methods for transferring information",ex:"e.g. Secure File Transfer Procedure"},
+    {t:"Encryption enforced for data in transit",d:"Technical controls ensuring encrypted transfers",ex:"e.g. TLS 1.2/1.3 config, SFTP usage, encrypted email gateway"},
+    {t:"NDAs and data sharing agreements",d:"Formal agreements covering third-party data transfers",ex:"e.g. signed NDA, data sharing agreement with partners"},
+  ]},
+  {id:"5.15",theme:"org",title:"Access control",desc:"Rules to control physical and logical access shall be established based on business and IS requirements.",ev:[
+    {t:"Access Control Policy",d:"Formal policy defining access control principles",ex:"e.g. Access Control Policy document"},
+    {t:"Role-based access control (RBAC) implemented",d:"Access assigned based on job role/function",ex:"e.g. Entra ID/AD group structure screenshot showing RBAC"},
+    {t:"Access provisioning and change process",d:"How access is requested, approved and removed",ex:"e.g. access request workflow, ITSM ticket records"},
+  ]},
+  {id:"5.16",theme:"org",title:"Identity management",desc:"The full lifecycle of identities shall be managed.",ev:[
+    {t:"Identity lifecycle management procedure",d:"Onboarding through offboarding identity management (JML)",ex:"e.g. Joiner/Mover/Leaver process documentation"},
+    {t:"Unique user IDs enforced — no shared accounts",d:"Each user has individual unique identifier",ex:"e.g. AD policy enforcing unique account per user"},
+    {t:"Privileged account management controls",d:"PAM solution or controlled elevated access process",ex:"e.g. CyberArk, BeyondTrust, or PAM review evidence"},
+  ]},
+  {id:"5.17",theme:"org",title:"Authentication information",desc:"The allocation and management of authentication information shall be controlled.",ev:[
+    {t:"Password policy enforced technically",d:"Minimum length, complexity, history enforced at system level",ex:"e.g. Entra ID / Azure AD password policy configuration screenshot"},
+    {t:"MFA enforced for all users",d:"Multi-factor authentication required for all sign-ins",ex:"e.g. Conditional Access policy requiring MFA for all users"},
+    {t:"Default credentials changed — documented procedure",d:"Process to change all default system/device credentials",ex:"e.g. system hardening checklist"},
+    {t:"Corporate password manager deployed",d:"Enterprise password vault for managing credentials",ex:"e.g. 1Password Business, Bitwarden Teams deployment evidence"},
+  ]},
+  {id:"5.18",theme:"org",title:"Access rights",desc:"Access rights shall be provisioned, reviewed, modified and removed in accordance with access control policy.",ev:[
+    {t:"Formal access request and approval process",d:"Structured process for requesting and approving access",ex:"e.g. ServiceNow access request form with approval workflow"},
+    {t:"Periodic access recertification reviews",d:"Regular formal reviews of who has what access",ex:"e.g. quarterly access review report signed off by managers"},
+    {t:"Timely revocation on departure/role change",d:"Access removed promptly when no longer required",ex:"e.g. offboarding SLA evidence, AD disable timestamp vs last day"},
+  ]},
+  {id:"5.19",theme:"org",title:"Information security in supplier relationships",desc:"Processes shall be defined to manage IS risks associated with supplier products and services.",ev:[
+    {t:"Third-party/supplier security policy",d:"Formal policy for managing supplier IS",ex:"e.g. Third Party Security Policy or Supplier Management Policy"},
+    {t:"IS requirements in supplier contracts",d:"Security clauses in all supplier agreements",ex:"e.g. contract template with IS schedule/annex"},
+    {t:"Supplier register with risk ratings",d:"Inventory of all suppliers with criticality and data access noted",ex:"e.g. supplier register with risk rating column"},
+  ]},
+  {id:"5.20",theme:"org",title:"Addressing security within supplier agreements",desc:"Relevant IS requirements shall be established with each supplier based on type of relationship.",ev:[
+    {t:"Supplier agreements with IS clauses signed",d:"Signed contracts containing IS requirements",ex:"e.g. signed MSA/DPA with IS schedule"},
+    {t:"Data Processing Agreements (DPAs) signed",d:"GDPR-compliant DPAs with all data processors",ex:"e.g. signed DPAs with cloud providers and SaaS vendors"},
+    {t:"Right to audit clauses in contracts",d:"Contractual ability to audit supplier security",ex:"e.g. contract extract showing right-to-audit clause"},
+  ]},
+  {id:"5.21",theme:"org",title:"Managing IS in the ICT supply chain",desc:"Processes shall be defined to manage IS risks in the ICT supply chain.",ev:[
+    {t:"ICT supply chain risk assessment",d:"Risk assessment covering hardware and software suppliers",ex:"e.g. supply chain risk register with assessment results"},
+    {t:"Approved supplier/vendor list",d:"List of vetted and approved technology vendors",ex:"e.g. approved vendor list maintained by procurement"},
+    {t:"Software component tracking / SBOM",d:"Awareness of software components and dependencies",ex:"e.g. Software Bill of Materials (SBOM) or open source inventory"},
+  ]},
+  {id:"5.22",theme:"org",title:"Monitoring, review and change management of supplier services",desc:"The organisation shall regularly monitor, review and manage change in supplier IS practices.",ev:[
+    {t:"Supplier review meetings/reports",d:"Periodic review of supplier performance and security posture",ex:"e.g. quarterly supplier review meeting minutes with IS agenda"},
+    {t:"Supplier security assessments",d:"Annual security questionnaire or assessment of key suppliers",ex:"e.g. completed CAIQ, SIG, or bespoke security questionnaire"},
+    {t:"SLA performance monitoring records",d:"Evidence of tracking supplier SLAs including security metrics",ex:"e.g. monthly service review report with SLA compliance"},
+  ]},
+  {id:"5.23",theme:"org",title:"IS for use of cloud services",desc:"Processes for acquisition, use, management and exit from cloud services shall be established.",ev:[
+    {t:"Cloud security / cloud adoption policy",d:"Policy governing how cloud services are used",ex:"e.g. Cloud Adoption Policy, Cloud Security Policy"},
+    {t:"Cloud provider security assessment",d:"Review of cloud provider security posture and shared responsibility",ex:"e.g. CSP Shared Responsibility Model docs, SOC 2 reports"},
+    {t:"Cloud configuration security baselines",d:"Secure configuration standards applied to cloud resources",ex:"e.g. Azure Policy, AWS Config, GCP Security Command Center screenshot"},
+    {t:"Cloud exit/portability plan",d:"Documented strategy for migrating away from a provider",ex:"e.g. exit strategy document or contract portability clause"},
+  ]},
+  {id:"5.24",theme:"org",title:"Planning and preparation of IS incident management",desc:"The organisation shall plan and prepare for managing IS incidents.",ev:[
+    {t:"Incident Response Plan (IRP) documented",d:"Comprehensive plan for IS incidents",ex:"e.g. IRP-001 with roles, process, escalation paths"},
+    {t:"Incident Response Team (CSIRT) defined",d:"Named team with defined roles and contacts",ex:"e.g. CSIRT roster with contact details"},
+    {t:"Incident severity classification scheme",d:"Defined severity levels for incidents (P1-P4 or similar)",ex:"e.g. incident severity matrix with response SLAs per level"},
+  ]},
+  {id:"5.25",theme:"org",title:"Assessment and decision on IS events",desc:"IS events shall be assessed and classified as incidents where appropriate.",ev:[
+    {t:"Event-to-incident triage criteria documented",d:"Documented criteria for escalating events to incidents",ex:"e.g. IRP triage section with decision tree"},
+    {t:"Event logging and triage process",d:"Process for reviewing security events and determining severity",ex:"e.g. SIEM alerting rules and SOC triage procedure"},
+  ]},
+  {id:"5.26",theme:"org",title:"Response to IS incidents",desc:"IS incidents shall be responded to in accordance with documented procedures.",ev:[
+    {t:"Incident response playbooks",d:"Specific playbooks for common incident types",ex:"e.g. ransomware playbook, data breach playbook, phishing playbook"},
+    {t:"Incident log with resolution records",d:"Evidence of incidents being managed and resolved",ex:"e.g. incident log showing open/closed tickets with timestamps"},
+  ]},
+  {id:"5.27",theme:"org",title:"Learning from IS incidents",desc:"Knowledge from IS incidents shall be used to improve IS controls.",ev:[
+    {t:"Post-Incident Review (PIR) / RCA reports",d:"Documented lessons learned from significant incidents",ex:"e.g. PIR/RCA reports filed for each major incident"},
+    {t:"Incident trend analysis reports",d:"Periodic review of incident patterns and trends",ex:"e.g. monthly/quarterly incident trends report"},
+    {t:"Control improvements triggered by incidents",d:"Evidence IS controls were updated following incidents",ex:"e.g. change requests or action items linked to incident tickets"},
+  ]},
+  {id:"5.28",theme:"org",title:"Collection of evidence",desc:"Procedures for identification, collection and preservation of evidence shall be established.",ev:[
+    {t:"Evidence collection and handling procedure",d:"How to collect and preserve forensic evidence legally",ex:"e.g. Digital Forensics and Evidence Handling SOP"},
+    {t:"Chain of custody process/documentation",d:"Evidence tracking to maintain legal admissibility",ex:"e.g. chain of custody form template"},
+  ]},
+  {id:"5.29",theme:"org",title:"IS during disruption",desc:"The organisation shall plan how to maintain IS at an appropriate level during disruption.",ev:[
+    {t:"IS continuity requirements in BCP",d:"IS controls and requirements included in continuity plan",ex:"e.g. BCP section on maintaining security controls during disruption"},
+    {t:"IS controls validated in BCP/DR tests",d:"Security posture verified during continuity exercises",ex:"e.g. DR test report including IS control verification"},
+  ]},
+  {id:"5.30",theme:"org",title:"ICT readiness for business continuity",desc:"ICT readiness shall be planned, implemented, maintained and tested.",ev:[
+    {t:"ICT Disaster Recovery Plan",d:"Documented plan for recovering ICT systems",ex:"e.g. IT Disaster Recovery Plan document"},
+    {t:"RTO and RPO defined for critical systems",d:"Recovery time and recovery point objectives specified",ex:"e.g. Business Impact Analysis with RTO/RPO table"},
+    {t:"DR test results and reports",d:"Evidence recovery capabilities are tested regularly",ex:"e.g. annual DR test report with results"},
+  ]},
+  {id:"5.31",theme:"org",title:"Legal, statutory, regulatory and contractual requirements",desc:"Legal, statutory, regulatory and contractual requirements relevant to IS shall be identified and kept up to date.",ev:[
+    {t:"Legal and regulatory compliance register",d:"List of applicable laws, regulations and standards",ex:"e.g. GDPR, DPA 2018, NIS2, sector-specific regulations register"},
+    {t:"Compliance review evidence",d:"Periodic review confirming ongoing compliance",ex:"e.g. annual compliance review report or legal register update records"},
+  ]},
+  {id:"5.32",theme:"org",title:"Intellectual property rights",desc:"Appropriate procedures to protect intellectual property rights shall be implemented.",ev:[
+    {t:"IP rights and software licensing policy",d:"Policy on software licensing, copyright and IP",ex:"e.g. IP/Copyright Policy, Software Licensing Policy"},
+    {t:"Software Asset Management (SAM) records",d:"Licensed software inventory with licence evidence",ex:"e.g. SAM tool report, licence register"},
+  ]},
+  {id:"5.33",theme:"org",title:"Protection of records",desc:"Records shall be protected from loss, destruction, falsification and unauthorised access.",ev:[
+    {t:"Records retention policy and schedule",d:"Defined retention periods for all record types",ex:"e.g. Records Retention Schedule by record category"},
+    {t:"Records access controls in place",d:"Access restricted to authorised personnel",ex:"e.g. SharePoint permissions, document vault access controls"},
+    {t:"Records included in backup and recovery",d:"Records covered by backup policy",ex:"e.g. backup policy showing records systems in scope"},
+  ]},
+  {id:"5.34",theme:"org",title:"Privacy and protection of personal information",desc:"Requirements for privacy and protection of personal information shall be met per applicable legislation.",ev:[
+    {t:"Data Protection / Privacy Policy",d:"Formal data protection and privacy policy",ex:"e.g. Data Protection Policy, Privacy Notice for employees and customers"},
+    {t:"Data Protection Impact Assessments (DPIAs)",d:"DPIAs conducted for high-risk processing activities",ex:"e.g. completed DPIA records"},
+    {t:"Record of Processing Activities (RoPA)",d:"Article 30 GDPR processing register maintained",ex:"e.g. RoPA spreadsheet or OneTrust/TrustArc records"},
+    {t:"Data Subject Request (DSR) handling procedure",d:"Process for SARs, erasure requests etc.",ex:"e.g. DSR procedure with log of requests received and completed"},
+  ]},
+  {id:"5.35",theme:"org",title:"Independent review of IS",desc:"The organisation's approach to managing IS shall be reviewed independently at planned intervals.",ev:[
+    {t:"Internal ISMS audit programme and results",d:"Scheduled internal audits of the ISMS",ex:"e.g. internal audit plan and completed audit reports"},
+    {t:"External audit or penetration test results",d:"Third-party security assessment or certification audit",ex:"e.g. penetration test report, ISO 27001 Stage 1/2 audit report"},
+    {t:"Annual ISMS management review",d:"Formal management review of ISMS effectiveness",ex:"e.g. management review meeting minutes and action items"},
+  ]},
+  {id:"5.36",theme:"org",title:"Compliance with policies, rules and standards",desc:"Compliance with IS policy, topic-specific policies and standards shall be regularly reviewed.",ev:[
+    {t:"Compliance monitoring and audit schedule",d:"Regular scheduled checks against IS policies",ex:"e.g. compliance audit calendar or monitoring plan"},
+    {t:"Technical compliance scanning results",d:"Automated configuration compliance scanning",ex:"e.g. Azure Policy, CIS-CAT, Qualys compliance dashboard"},
+    {t:"Policy exception/non-compliance register",d:"Process and register for managing policy exceptions",ex:"e.g. exception register with risk acceptance and remediation"},
+  ]},
+  {id:"5.37",theme:"org",title:"Documented operating procedures",desc:"Operating procedures for information processing facilities shall be documented and made available.",ev:[
+    {t:"IT standard operating procedures (SOPs)",d:"Documented SOPs for key IT processes",ex:"e.g. backup SOP, patch management SOP, change management SOP"},
+    {t:"Procedures version-controlled and approved",d:"Formal document control for operating procedures",ex:"e.g. document management system with version history and approvals"},
+  ]},
+
+  // ── PEOPLE 6.1–6.8 ──
+  {id:"6.1",theme:"ppl",title:"Screening",desc:"Background verification checks shall be carried out prior to joining the organisation.",ev:[
+    {t:"Pre-employment screening policy",d:"Documented screening requirements by role/risk level",ex:"e.g. Pre-employment Screening Policy"},
+    {t:"Background check records for all employees",d:"Evidence checks were performed for all staff",ex:"e.g. third-party screening provider reports, DBS check records"},
+    {t:"Screening for contractors and third parties",d:"Background checking extended to non-employees",ex:"e.g. contractor onboarding checklist including screening"},
+  ]},
+  {id:"6.2",theme:"ppl",title:"Terms and conditions of employment",desc:"Employment contracts shall state personnel's and the organisation's IS responsibilities.",ev:[
+    {t:"IS clauses in employment contracts",d:"Contracts include IS obligations and confidentiality requirements",ex:"e.g. contract extract with IS/confidentiality clause"},
+    {t:"Contractor/supplier agreements with IS clauses",d:"IS obligations in contractor agreements",ex:"e.g. contractor NDA or statement of work with IS section"},
+  ]},
+  {id:"6.3",theme:"ppl",title:"IS awareness, education and training",desc:"Personnel shall receive appropriate IS awareness education, training and regular updates.",ev:[
+    {t:"IS security awareness training programme",d:"Regular mandatory security awareness training for all staff",ex:"e.g. KnowBe4, Proofpoint — annual training completion evidence"},
+    {t:"Training completion records — all staff",d:"Evidence all staff completed mandatory security training",ex:"e.g. LMS completion report showing >95% staff completion"},
+    {t:"Simulated phishing campaign results",d:"Phishing simulation programme with metrics",ex:"e.g. quarterly phishing simulation report with click rates"},
+    {t:"Role-specific IS training for technical staff",d:"Additional training for IT, privileged users, developers",ex:"e.g. CISSP, CompTIA Security+, SANS training records"},
+  ]},
+  {id:"6.4",theme:"ppl",title:"Disciplinary process",desc:"A disciplinary process shall be formalised to take action against IS policy violations.",ev:[
+    {t:"IS disciplinary procedure",d:"Documented consequences for IS policy violations",ex:"e.g. HR Disciplinary Policy referencing IS breaches"},
+    {t:"Staff awareness of disciplinary consequences",d:"Evidence staff understand consequences of IS violations",ex:"e.g. policy acknowledgement records, training covering IS discipline"},
+  ]},
+  {id:"6.5",theme:"ppl",title:"Responsibilities after termination or change of employment",desc:"IS responsibilities valid after termination shall be defined, enforced and communicated.",ev:[
+    {t:"Exit process including IS obligations reminder",d:"Departing staff formally reminded of post-employment obligations",ex:"e.g. exit interview checklist with IS obligations declaration"},
+    {t:"Post-employment confidentiality clause in contracts",d:"Legal obligation extends beyond employment",ex:"e.g. contract clause specifying post-employment confidentiality period"},
+  ]},
+  {id:"6.6",theme:"ppl",title:"Confidentiality or non-disclosure agreements",desc:"Requirements for confidentiality or NDAs shall be identified, documented and signed by personnel.",ev:[
+    {t:"NDAs signed by all employees at onboarding",d:"All staff sign NDA/confidentiality agreement",ex:"e.g. signed NDA records in HR system for all employees"},
+    {t:"NDAs with all third parties and contractors",d:"Suppliers and contractors have signed NDAs",ex:"e.g. supplier/contractor NDA log"},
+  ]},
+  {id:"6.7",theme:"ppl",title:"Remote working",desc:"Security measures shall be implemented when personnel are working remotely.",ev:[
+    {t:"Remote Working Policy",d:"Policy covering security requirements for remote workers",ex:"e.g. Remote Working Policy document"},
+    {t:"VPN or secure remote access implemented",d:"Technical control enforcing encrypted remote access",ex:"e.g. Always-On VPN, Zscaler ZIA, GlobalProtect config screenshot"},
+    {t:"Endpoint security on all remote devices",d:"EDR and encryption on all remote endpoints",ex:"e.g. MDM/Intune device compliance report, BitLocker/FileVault status"},
+  ]},
+  {id:"6.8",theme:"ppl",title:"IS event reporting",desc:"The organisation shall provide a mechanism for personnel to report IS events.",ev:[
+    {t:"IS incident reporting mechanism",d:"Clear and accessible way for staff to report IS events",ex:"e.g. 'Report Phishing' button in Outlook, dedicated security mailbox"},
+    {t:"Reporting channel communicated to all staff",d:"All staff aware of how and when to report",ex:"e.g. intranet security page, awareness training covering reporting"},
+    {t:"IS event log showing reports received",d:"Record of events reported through the reporting channel",ex:"e.g. ITSM security incident queue records"},
+  ]},
+
+  // ── PHYSICAL 7.1–7.14 ──
+  {id:"7.1",theme:"phy",title:"Physical security perimeters",desc:"Security perimeters shall be defined and used to protect areas containing information assets.",ev:[
+    {t:"Physical security perimeter defined and documented",d:"Office/data centre boundaries formally identified",ex:"e.g. site security plan or annotated floor plan"},
+    {t:"Physical access controls at perimeter entry points",d:"Barriers, CCTV, access cards at perimeter entry points",ex:"e.g. access control system coverage map, CCTV placement diagram"},
+  ]},
+  {id:"7.2",theme:"phy",title:"Physical entry",desc:"Secure areas shall be protected by appropriate entry controls and access points.",ev:[
+    {t:"Electronic access control system deployed",d:"Card readers, PIN pads, or biometrics at entry points",ex:"e.g. access control system showing entry points covered"},
+    {t:"Visitor management procedure and records",d:"Visitors signed in, badged and escorted",ex:"e.g. visitor log book or digital visitor management system records"},
+    {t:"Physical access rights review records",d:"Periodic review of who has access to which areas",ex:"e.g. access card holder list reviewed quarterly"},
+  ]},
+  {id:"7.3",theme:"phy",title:"Securing offices, rooms and facilities",desc:"Physical security for offices, rooms and facilities shall be designed and implemented.",ev:[
+    {t:"Physical security assessment or survey",d:"Documented review of office/facility physical security",ex:"e.g. physical security assessment report"},
+    {t:"Sensitive areas have enhanced physical security",d:"Server rooms, comms rooms have additional controls",ex:"e.g. server room access log, dedicated CCTV in sensitive areas"},
+  ]},
+  {id:"7.4",theme:"phy",title:"Physical security monitoring",desc:"Premises shall be continuously monitored for unauthorised physical access.",ev:[
+    {t:"CCTV system with adequate coverage and retention",d:"Video surveillance covering critical areas",ex:"e.g. CCTV camera coverage map, 30-day retention policy"},
+    {t:"Physical security alarm systems",d:"Intruder alarms or motion detection in place",ex:"e.g. alarm system maintenance certificate"},
+    {t:"Physical access logs reviewed regularly",d:"Entry/exit access logs reviewed for anomalies",ex:"e.g. weekly/monthly access log review records"},
+  ]},
+  {id:"7.5",theme:"phy",title:"Protecting against physical and environmental threats",desc:"Protection against natural disasters and other physical threats shall be designed and implemented.",ev:[
+    {t:"Environmental threat risk assessment",d:"Risk assessment covering fire, flood, extreme weather, power",ex:"e.g. BIA or risk register with environmental threats section"},
+    {t:"Fire detection and suppression in server areas",d:"Fire detection and suppression systems in data rooms",ex:"e.g. FM200, VESDA, or sprinkler system maintenance certificate"},
+    {t:"Environmental monitoring in server areas",d:"Temperature, humidity, water sensors with alerting",ex:"e.g. environmental monitoring system dashboard screenshot"},
+  ]},
+  {id:"7.6",theme:"phy",title:"Working in secure areas",desc:"Security measures for working in secure areas shall be designed and implemented.",ev:[
+    {t:"Secure area working rules/procedures",d:"Documented rules for accessing and working in secure areas",ex:"e.g. Data Centre Access Policy, Clean Desk Policy"},
+    {t:"Escort procedure for visitors in secure areas",d:"External visitors always escorted in secure zones",ex:"e.g. visitor escort procedure, escort log records"},
+  ]},
+  {id:"7.7",theme:"phy",title:"Clear desk and clear screen",desc:"Clear desk and clear screen rules shall be defined and appropriately enforced.",ev:[
+    {t:"Clean Desk and Clear Screen Policy",d:"Formal policy requiring clear desks and locked screens",ex:"e.g. Clean Desk Policy document"},
+    {t:"Automatic screen lock technically enforced",d:"Screen locks automatically after defined inactivity period",ex:"e.g. GPO: password-protected screensaver after 5 minutes"},
+    {t:"Clean desk audit results",d:"Periodic walk-round audits confirming policy compliance",ex:"e.g. quarterly clean desk audit checklist with results"},
+  ]},
+  {id:"7.8",theme:"phy",title:"Equipment siting and protection",desc:"Equipment shall be sited securely to reduce environmental threats and unauthorised access.",ev:[
+    {t:"Equipment siting standards documented",d:"Standards for positioning and securing IT equipment",ex:"e.g. data centre design standards, rack positioning guidelines"},
+    {t:"Portable equipment physically secured",d:"Laptops, monitors secured against theft",ex:"e.g. laptop lock policy, asset tag register, Kensington lock evidence"},
+  ]},
+  {id:"7.9",theme:"phy",title:"Security of assets off-premises",desc:"Off-site assets shall be protected taking into account different risks outside the premises.",ev:[
+    {t:"Off-premises asset handling procedure",d:"Formal rules for taking IT equipment off-site",ex:"e.g. Laptop Loan Policy, Travel Security Guidelines"},
+    {t:"Full disk encryption on all portable devices",d:"All laptops and removable media encrypted",ex:"e.g. BitLocker/FileVault status report from MDM (Intune/JAMF)"},
+  ]},
+  {id:"7.10",theme:"phy",title:"Storage media",desc:"Storage media shall be managed through its full lifecycle.",ev:[
+    {t:"Media management policy",d:"Policy covering classification, handling and storage of media",ex:"e.g. Storage Media Management Policy"},
+    {t:"Secure media disposal procedure",d:"Process for securely destroying or sanitising media",ex:"e.g. NIST 800-88 or NCSC-aligned media destruction procedure"},
+    {t:"Media destruction/disposal certificates",d:"Certificates from secure destruction of decommissioned media",ex:"e.g. hard drive destruction certificates from ADISA-certified contractor"},
+  ]},
+  {id:"7.11",theme:"phy",title:"Supporting utilities",desc:"Information processing facilities shall be protected from power failures and utility disruptions.",ev:[
+    {t:"UPS systems protecting critical systems",d:"Uninterruptible Power Supply for all critical equipment",ex:"e.g. UPS test records, UPS monitoring dashboard"},
+    {t:"Backup power/generator for extended outages",d:"Generator or alternative power for extended failures",ex:"e.g. generator maintenance certificate, fuel level monitoring"},
+    {t:"Utility failure response procedures",d:"Documented process for responding to utility failures",ex:"e.g. BCP section on power and utility failure response"},
+  ]},
+  {id:"7.12",theme:"phy",title:"Cabling security",desc:"Cables carrying power or data shall be protected from interception, interference or damage.",ev:[
+    {t:"Cabling infrastructure standards documented",d:"Network and power cabling standards",ex:"e.g. Network Cabling Policy, structured cabling design document"},
+    {t:"Cable management, labelling and documentation",d:"All cables labelled, managed and documented",ex:"e.g. cable management photos, network cabling diagram"},
+  ]},
+  {id:"7.13",theme:"phy",title:"Equipment maintenance",desc:"Equipment shall be maintained correctly to ensure availability, integrity and confidentiality.",ev:[
+    {t:"Preventive maintenance schedule",d:"Planned preventive maintenance for all key equipment",ex:"e.g. equipment maintenance schedule or vendor maintenance contract"},
+    {t:"Maintenance records and logs",d:"Records of all maintenance activities performed",ex:"e.g. equipment maintenance log or CMDB records"},
+    {t:"Authorised maintenance personnel list",d:"Only approved personnel or vendors perform maintenance",ex:"e.g. approved maintenance vendor list"},
+  ]},
+  {id:"7.14",theme:"phy",title:"Secure disposal or re-use of equipment",desc:"Equipment shall be verified to ensure sensitive data is removed before disposal or re-use.",ev:[
+    {t:"Equipment disposal and reuse procedure",d:"Documented process for securely disposing of or reusing equipment",ex:"e.g. IT Asset Disposal SOP"},
+    {t:"Data sanitisation evidence before reuse/disposal",d:"Technical evidence of data wiping to approved standard",ex:"e.g. Blancco or DBAN wipe certificates per device"},
+    {t:"WEEE-compliant disposal certificates",d:"Evidence of legally compliant disposal",ex:"e.g. WEEE disposal certificate from approved contractor"},
+  ]},
+
+  // ── TECHNOLOGICAL 8.1–8.34 ──
+  {id:"8.1",theme:"tec",title:"User endpoint devices",desc:"Information stored on, processed by or accessible via user endpoint devices shall be protected.",ev:[
+    {t:"Endpoint protection/EDR deployed on all devices",d:"Enterprise anti-malware/EDR on every endpoint",ex:"e.g. CrowdStrike Falcon, Defender for Endpoint, SentinelOne deployment report"},
+    {t:"MDM/UEM managing all endpoints",d:"All devices enrolled in endpoint management",ex:"e.g. Intune/JAMF device compliance dashboard — all enrolled"},
+    {t:"Full disk encryption enforced on endpoints",d:"FDE enabled on all laptops and desktops",ex:"e.g. BitLocker/FileVault compliance report from MDM"},
+    {t:"Endpoint patch compliance reports",d:"All endpoints patched within policy SLA",ex:"e.g. patch compliance dashboard: 95%+ within 30 days"},
+  ]},
+  {id:"8.2",theme:"tec",title:"Privileged access rights",desc:"The allocation and use of privileged access rights shall be restricted and managed.",ev:[
+    {t:"Privileged account inventory/register",d:"Complete list of all privileged and admin accounts",ex:"e.g. PAM tool export or AD privileged group membership report"},
+    {t:"Just-in-time (JIT) or time-limited privileged access",d:"Privileges granted on-demand and revoked automatically",ex:"e.g. Azure PIM config, CyberArk JIT provisioning screenshot"},
+    {t:"Privileged account activity logging and monitoring",d:"All privileged user actions logged and monitored",ex:"e.g. PAM session recording, SIEM alerts for privileged activity"},
+    {t:"Separate admin accounts for privileged tasks",d:"Admins have separate privileged account",ex:"e.g. AD showing admin has both standard user + admin account"},
+  ]},
+  {id:"8.3",theme:"tec",title:"Information access restriction",desc:"Access to information shall be restricted in accordance with the access control policy.",ev:[
+    {t:"Least privilege principle applied throughout",d:"Users have only the minimum access needed",ex:"e.g. access review report demonstrating least privilege"},
+    {t:"Application-level RBAC/ABAC configured",d:"Within-application access controls configured appropriately",ex:"e.g. SharePoint permissions screenshot, database role assignments"},
+    {t:"Network segmentation restricting lateral access",d:"Network zones preventing unauthorised lateral movement",ex:"e.g. network diagram with segmentation zones and firewall rules"},
+  ]},
+  {id:"8.4",theme:"tec",title:"Access to source code",desc:"Read and write access to source code, development tools and software libraries shall be managed.",ev:[
+    {t:"Source code repository access controls",d:"Only authorised developers can access source code",ex:"e.g. GitHub/GitLab team and repository permissions screenshot"},
+    {t:"Separate dev, test and production environments",d:"Development segregated from production systems",ex:"e.g. environment architecture diagram showing separation"},
+    {t:"Code review/pull request approval process",d:"Code reviewed and approved before merging to main branch",ex:"e.g. branch protection rules, PR approval history"},
+  ]},
+  {id:"8.5",theme:"tec",title:"Secure authentication",desc:"Secure authentication technologies and procedures shall be implemented.",ev:[
+    {t:"MFA enforced for all users and systems",d:"Multi-factor authentication required for every user sign-in",ex:"e.g. Azure AD Conditional Access policy requiring MFA — all users"},
+    {t:"Phishing-resistant MFA deployed",d:"FIDO2 keys, Windows Hello, or hardware tokens",ex:"e.g. FIDO2 key deployment records, passkey configuration"},
+    {t:"Account lockout after failed authentication attempts",d:"Automatic account lockout configured in all systems",ex:"e.g. AD lockout policy: 5 attempts, 30 min lockout"},
+    {t:"Session timeout configured across applications",d:"Automatic session expiry after inactivity",ex:"e.g. application session timeout configuration"},
+  ]},
+  {id:"8.6",theme:"tec",title:"Capacity management",desc:"Resource use shall be monitored and adjusted in line with capacity requirements.",ev:[
+    {t:"Capacity monitoring for all key resources",d:"CPU, memory, storage, network bandwidth monitored",ex:"e.g. Azure Monitor, Datadog, Nagios dashboards"},
+    {t:"Capacity plan documented",d:"Forward-looking capacity plan for critical systems",ex:"e.g. Annual Capacity Plan reviewed by management"},
+    {t:"Automated alerts for capacity thresholds",d:"Alerts fire before resources are exhausted",ex:"e.g. alert rules in monitoring platform"},
+  ]},
+  {id:"8.7",theme:"tec",title:"Protection against malware",desc:"Protection against malware shall be implemented and supported by user awareness.",ev:[
+    {t:"Anti-malware/EDR on all endpoints and servers",d:"Enterprise AV/EDR deployed and centrally managed",ex:"e.g. Microsoft Defender ATP, CrowdStrike Falcon dashboard"},
+    {t:"Email security gateway with malware filtering",d:"Email gateway filtering malicious attachments and links",ex:"e.g. Microsoft Defender for Office 365, Mimecast, Proofpoint config"},
+    {t:"Web content and URL filtering",d:"Web gateway blocking malicious or inappropriate sites",ex:"e.g. Zscaler ZIA, Cisco Umbrella, web proxy policy"},
+    {t:"File scanning at network boundaries",d:"All files scanned on entry and exit",ex:"e.g. gateway AV scanning configuration, sandbox detonation"},
+  ]},
+  {id:"8.8",theme:"tec",title:"Management of technical vulnerabilities",desc:"Technical vulnerabilities shall be identified, evaluated and remediated.",ev:[
+    {t:"Vulnerability scanning programme in place",d:"Regular automated scanning of all in-scope systems",ex:"e.g. Qualys, Tenable.io, Rapid7 InsightVM scan schedule and reports"},
+    {t:"Vulnerability management policy with remediation SLAs",d:"Defined timelines for patching by CVSS severity",ex:"e.g. policy: Critical <48h, High <30d, Medium <90d"},
+    {t:"Patch management process and evidence",d:"Structured process for deploying security patches",ex:"e.g. patch management SOP, WSUS/SCCM/Intune patching reports"},
+    {t:"Penetration testing reports",d:"Regular penetration testing by qualified external party",ex:"e.g. annual penetration test report with findings and remediation"},
+  ]},
+  {id:"8.9",theme:"tec",title:"Configuration management",desc:"Configurations of hardware, software, services and networks shall be established, documented and managed.",ev:[
+    {t:"Security hardening baselines documented",d:"Standards defined based on CIS Benchmarks or equivalent",ex:"e.g. CIS Level 1/2 benchmarks applied to Windows, Linux, cloud"},
+    {t:"Configuration management database (CMDB)",d:"All system configurations tracked",ex:"e.g. ServiceNow CMDB or spreadsheet-based configuration inventory"},
+    {t:"Automated configuration compliance scanning",d:"Ongoing compliance checking against baselines",ex:"e.g. Azure Policy, CIS-CAT scan results"},
+  ]},
+  {id:"8.10",theme:"tec",title:"Information deletion",desc:"Information shall be deleted when no longer required.",ev:[
+    {t:"Data retention and deletion policy with schedules",d:"Defined retention periods with automated or manual deletion",ex:"e.g. Data Retention Policy with retention schedule table"},
+    {t:"Technical deletion/archival controls in place",d:"Automated retention policies and deletion workflows",ex:"e.g. Microsoft Purview retention labels, O365 data lifecycle policies"},
+    {t:"Records of data deletion activities",d:"Evidence that data deletion is performed and logged",ex:"e.g. deletion logs, data management reports"},
+  ]},
+  {id:"8.11",theme:"tec",title:"Data masking",desc:"Data masking shall be used in accordance with access control policy.",ev:[
+    {t:"Data masking in non-production environments",d:"PII and sensitive data masked or synthesised in dev/test",ex:"e.g. test data management tool config, masking implementation evidence"},
+    {t:"Dynamic data masking or tokenisation in production",d:"Masking applied dynamically based on access level",ex:"e.g. Protegrity, Informatica, or Azure SQL dynamic data masking config"},
+  ]},
+  {id:"8.12",theme:"tec",title:"Data leakage prevention",desc:"Data leakage prevention measures shall be applied to systems, networks and devices.",ev:[
+    {t:"DLP solution deployed across endpoint, email and web",d:"Technical DLP controls covering all major data channels",ex:"e.g. Microsoft Purview DLP, Symantec DLP, Forcepoint deployment"},
+    {t:"DLP policies configured for sensitive data types",d:"Policies detecting and blocking PII, financial data, IP exfiltration",ex:"e.g. DLP policy configuration screenshot with sensitive data types"},
+    {t:"DLP incident monitoring and response process",d:"DLP alerts reviewed and incidents actioned",ex:"e.g. DLP incident queue review records"},
+  ]},
+  {id:"8.13",theme:"tec",title:"Information backup",desc:"Backup copies of information shall be maintained and regularly tested.",ev:[
+    {t:"Backup policy with defined schedule and scope",d:"RPO/RTO defined, backup frequency and scope documented",ex:"e.g. Backup Policy document with retention schedule table"},
+    {t:"Backup monitoring and success reports",d:"Evidence backups complete successfully every cycle",ex:"e.g. daily backup success/failure report from Veeam, Azure Backup"},
+    {t:"Backup restoration tests performed",d:"Periodic full restoration tests with results documented",ex:"e.g. quarterly restore test results — data recovered successfully"},
+    {t:"Offsite or immutable backup copies",d:"Backup copies protected against ransomware and site failure",ex:"e.g. Azure Blob immutable storage config, offsite tape/cloud backup"},
+  ]},
+  {id:"8.14",theme:"tec",title:"Redundancy of information processing facilities",desc:"Information processing facilities shall be implemented with redundancy sufficient to meet availability requirements.",ev:[
+    {t:"High-availability architecture for critical systems",d:"Redundant design documented for all critical systems",ex:"e.g. HA architecture diagram showing redundant components"},
+    {t:"Failover test results",d:"Evidence failover mechanisms have been tested",ex:"e.g. failover test report"},
+    {t:"Availability/uptime monitoring and reporting",d:"System availability monitored against defined SLAs",ex:"e.g. uptime monitoring dashboard with SLA compliance metrics"},
+  ]},
+  {id:"8.15",theme:"tec",title:"Logging",desc:"Logs recording activities, exceptions and security events shall be produced, stored, protected and analysed.",ev:[
+    {t:"Centralised SIEM with logs from all key sources",d:"All security-relevant event logs centralised",ex:"e.g. Microsoft Sentinel, Splunk, Elastic SIEM — log sources list"},
+    {t:"Log retention policy implemented",d:"Logs retained for defined minimum period",ex:"e.g. SIEM retention config: 12 months hot, 24 months cold storage"},
+    {t:"Log integrity protection",d:"Logs protected from unauthorised modification",ex:"e.g. write-once/immutable log storage, log forwarding to protected store"},
+    {t:"Automated log alerting and review process",d:"SIEM correlation rules reviewed by security team",ex:"e.g. SIEM alert rules list, SOC triage/review records"},
+  ]},
+  {id:"8.16",theme:"tec",title:"Monitoring activities",desc:"Networks, systems and applications shall be monitored for anomalous behaviour.",ev:[
+    {t:"Continuous or business-hours security monitoring",d:"Active monitoring of security events and alerts",ex:"e.g. SOC service contract or internal monitoring rota evidence"},
+    {t:"Network traffic monitoring or IDS/IPS",d:"Intrusion detection monitoring network traffic",ex:"e.g. IDS/IPS config, Darktrace or Vectra alert evidence"},
+    {t:"User behaviour analytics (UEBA)",d:"Monitoring for anomalous user and entity behaviour",ex:"e.g. Microsoft Sentinel UEBA, Varonis DatAlert configuration"},
+  ]},
+  {id:"8.17",theme:"tec",title:"Clock synchronisation",desc:"The clocks of information processing systems shall be synchronised to approved time sources.",ev:[
+    {t:"NTP synchronisation configured on all systems",d:"All systems configured to sync time from authoritative NTP",ex:"e.g. Group Policy NTP configuration, Linux chrony/NTP config screenshot"},
+    {t:"NTP synchronisation monitoring",d:"Alerts if systems drift from authorised time source",ex:"e.g. monitoring alert configuration for NTP sync failures"},
+  ]},
+  {id:"8.18",theme:"tec",title:"Use of privileged utility programs",desc:"Utility programs that could override controls shall be restricted and tightly controlled.",ev:[
+    {t:"Application allowlisting/whitelisting",d:"Only approved applications permitted to execute",ex:"e.g. AppLocker or WDAC policy configuration"},
+    {t:"Privileged utility usage logged and monitored",d:"All use of high-risk admin tools is logged",ex:"e.g. PAM session recording for privileged tools"},
+    {t:"Approval required for use of privileged utilities",d:"Formal approval process before using high-risk tools",ex:"e.g. change request or PAM checkout required"},
+  ]},
+  {id:"8.19",theme:"tec",title:"Installation of software on operational systems",desc:"Procedures shall be implemented to securely manage software installation on operational systems.",ev:[
+    {t:"Software installation policy",d:"Policy defining that only authorised software may be installed",ex:"e.g. Software Installation Policy"},
+    {t:"Technical controls preventing unauthorised installation",d:"Standard users cannot install unapproved software",ex:"e.g. Intune/GPO policy removing local admin rights"},
+    {t:"Software approval workflow",d:"Formal process for requesting and approving new software",ex:"e.g. software request and approval workflow in ITSM"},
+  ]},
+  {id:"8.20",theme:"tec",title:"Network security",desc:"Networks and network devices shall be secured, managed and controlled.",ev:[
+    {t:"Network Security Policy",d:"Formal policy governing network security",ex:"e.g. Network Security Policy document"},
+    {t:"Firewall configuration with reviewed rule sets",d:"Enterprise firewalls deployed with periodically reviewed rules",ex:"e.g. Palo Alto/Fortinet firewall config with rule review records"},
+    {t:"Network segmentation across security zones",d:"Network divided into segments based on trust and function",ex:"e.g. network architecture diagram with zones and segmentation"},
+    {t:"Network Access Control (NAC) deployed",d:"Only authorised and compliant devices connect",ex:"e.g. 802.1X implementation, Cisco ISE NAC configuration"},
+  ]},
+  {id:"8.21",theme:"tec",title:"Security of network services",desc:"Security mechanisms, service levels and requirements of network services shall be identified, implemented and monitored.",ev:[
+    {t:"Network service agreements with security SLAs",d:"ISP and cloud provider security requirements documented",ex:"e.g. ISP/connectivity contract with security SLAs"},
+    {t:"All sensitive data encrypted in transit (TLS/IPSec)",d:"Encryption enforced for all sensitive data in transit",ex:"e.g. TLS 1.2/1.3 enforcement policy, SSL Labs A+ rating evidence"},
+  ]},
+  {id:"8.22",theme:"tec",title:"Segregation of networks",desc:"Groups of services, users and systems shall be segregated in networks.",ev:[
+    {t:"Network segmentation architecture documented",d:"Different trust zones for different users and systems",ex:"e.g. DMZ, internal, management, OT/IoT network diagram"},
+    {t:"Guest network isolated from corporate network",d:"Visitor and IoT WiFi networks completely isolated",ex:"e.g. SSID configuration showing VLAN isolation for guest network"},
+    {t:"Firewall rules between all network segments",d:"Inter-zone traffic controlled by firewall rules",ex:"e.g. inter-zone firewall ACL rules showing deny-by-default"},
+  ]},
+  {id:"8.23",theme:"tec",title:"Web filtering",desc:"Access to external websites shall be managed to reduce exposure to malicious content.",ev:[
+    {t:"Web content filtering solution deployed",d:"URL and category filtering blocking malicious sites",ex:"e.g. Zscaler ZIA, Cisco Umbrella, Forcepoint Web Security"},
+    {t:"Web filter policy categories configured",d:"Policy defines which URL categories are blocked",ex:"e.g. web filter policy configuration screenshot"},
+    {t:"HTTPS/SSL inspection enabled",d:"Encrypted web traffic inspected for threats",ex:"e.g. TLS/SSL inspection policy enabled in web proxy/secure gateway"},
+  ]},
+  {id:"8.24",theme:"tec",title:"Use of cryptography",desc:"Rules for the effective use of cryptography and key management shall be defined and implemented.",ev:[
+    {t:"Cryptography and encryption policy",d:"Policy defining approved algorithms, key lengths, and protocols",ex:"e.g. Cryptography Policy: AES-256, RSA-2048+, TLS 1.2+ minimum"},
+    {t:"Key management procedure",d:"Cryptographic key lifecycle: generation, distribution, storage, rotation, destruction",ex:"e.g. Key Management Procedure or KMS (AWS KMS, Azure Key Vault)"},
+    {t:"Certificate lifecycle management process",d:"PKI certificates inventoried and renewed before expiry",ex:"e.g. certificate inventory with expiry dates and renewal process"},
+  ]},
+  {id:"8.25",theme:"tec",title:"Secure development lifecycle",desc:"Rules for secure development of software and systems shall be established and applied.",ev:[
+    {t:"Secure SDLC policy or DevSecOps process",d:"Security integrated into every stage of development",ex:"e.g. Secure SDLC Policy, DevSecOps process documentation"},
+    {t:"Threat modelling conducted for new systems",d:"Security risks identified at design/architecture stage",ex:"e.g. threat model templates, STRIDE threat modelling records"},
+    {t:"Developer secure coding training",d:"Developers trained in secure coding practices",ex:"e.g. OWASP training completion, Secure Code Warrior progress reports"},
+  ]},
+  {id:"8.26",theme:"tec",title:"Application security requirements",desc:"IS requirements shall be identified, specified and approved when developing or acquiring applications.",ev:[
+    {t:"Application security requirements template",d:"Security requirements defined for every new application",ex:"e.g. application security requirements checklist or template"},
+    {t:"OWASP Top 10 addressed in design and testing",d:"Common web application vulnerabilities explicitly addressed",ex:"e.g. security test cases mapped to OWASP Top 10"},
+    {t:"API security controls implemented",d:"APIs protected with authentication, authorisation and rate limiting",ex:"e.g. API gateway configuration, OAuth2/OIDC management evidence"},
+  ]},
+  {id:"8.27",theme:"tec",title:"Secure system architecture and engineering principles",desc:"Principles for engineering secure systems shall be established and applied.",ev:[
+    {t:"Secure architecture principles documented",d:"Defined principles: defence-in-depth, zero trust, least privilege",ex:"e.g. Enterprise Security Architecture document"},
+    {t:"Architecture review board or design review process",d:"New system designs reviewed for security before build",ex:"e.g. architecture review board process, design review records"},
+  ]},
+  {id:"8.28",theme:"tec",title:"Secure coding",desc:"Secure coding principles shall be applied to software development.",ev:[
+    {t:"Secure coding standards published and used",d:"Documented secure coding standards referenced by devs",ex:"e.g. Secure Coding Standard based on CERT or OWASP"},
+    {t:"SAST integrated into CI/CD pipeline",d:"Automated code scanning in build pipelines",ex:"e.g. SonarQube, Checkmarx, or Veracode SAST scan results in CI/CD"},
+    {t:"Security included in code review process",d:"Security considerations checked during peer code reviews",ex:"e.g. PR review checklist including security items"},
+  ]},
+  {id:"8.29",theme:"tec",title:"Security testing in development and acceptance",desc:"Security testing processes shall be defined and implemented in the development lifecycle.",ev:[
+    {t:"DAST (Dynamic Application Security Testing) performed",d:"Automated dynamic security testing of applications",ex:"e.g. OWASP ZAP, Burp Suite Pro automated scan results"},
+    {t:"Penetration testing of critical applications",d:"Manual penetration testing by qualified testers",ex:"e.g. application penetration test report with findings"},
+    {t:"Security acceptance criteria in pre-production",d:"Security sign-off required before production deployment",ex:"e.g. UAT checklist with mandatory security approval gate"},
+  ]},
+  {id:"8.30",theme:"tec",title:"Outsourced development",desc:"The organisation shall direct, monitor and review outsourced system development.",ev:[
+    {t:"Security requirements in outsourcing contracts",d:"IS requirements formally included in development contracts",ex:"e.g. development contract with information security schedule"},
+    {t:"Code review of all outsourced code",d:"Internal security review of all externally developed code",ex:"e.g. code review records for third-party developed code"},
+    {t:"Right to audit outsourced development practices",d:"Contractual right to assess developer security practices",ex:"e.g. contract clause allowing audit of development practices"},
+  ]},
+  {id:"8.31",theme:"tec",title:"Separation of development, test and production environments",desc:"Development, testing and production environments shall be separated and secured.",ev:[
+    {t:"Separate dev, test and production environments",d:"Distinct environments with independent access controls",ex:"e.g. environment architecture diagram with separate access controls"},
+    {t:"No production data in dev or test environments",d:"Production data masked, synthesised or excluded from non-prod",ex:"e.g. test data management policy, data masking evidence"},
+    {t:"Controlled change management for production deployments",d:"Formal change process for all production changes",ex:"e.g. change management records for all production deployments"},
+  ]},
+  {id:"8.32",theme:"tec",title:"Change management",desc:"Changes to information processing facilities and systems shall be subject to change management.",ev:[
+    {t:"Change Management Policy and procedure",d:"Formal documented change control process",ex:"e.g. Change Management Policy, CAB process"},
+    {t:"Change approval records",d:"Evidence all changes formally approved before implementation",ex:"e.g. approved change tickets in ServiceNow or JIRA"},
+    {t:"Change testing and rollback plans",d:"All changes tested with documented rollback procedure",ex:"e.g. change records showing test plan and rollback steps"},
+  ]},
+  {id:"8.33",theme:"tec",title:"Test information",desc:"Test information shall be appropriately selected, protected and managed.",ev:[
+    {t:"Test data management policy",d:"Policy governing the selection and protection of test data",ex:"e.g. Test Data Management Policy"},
+    {t:"Production data not used in test environments",d:"Controls preventing use of real production data in testing",ex:"e.g. data masking tool evidence, synthetic test data generation"},
+  ]},
+  {id:"8.34",theme:"tec",title:"Protection of information systems during audit testing",desc:"Audit tests shall be planned and agreed to minimise disruption to production.",ev:[
+    {t:"Audit testing procedures and methodology",d:"Documented approach for conducting IS audits safely",ex:"e.g. IS audit test plan methodology document"},
+    {t:"Audit tool access controls",d:"Tools used for auditing restricted and controlled",ex:"e.g. time-limited audit credentials, audit tool access log"},
+    {t:"Signed Rules of Engagement for audits/pentests",d:"Formal scope and schedule agreed before audit activity",ex:"e.g. signed RoE document for penetration test or IS audit"},
+  ]},
+];
+
+// ═══════════════════════════════════════════════════
+// OVERLAP CATEGORIES
+// Keywords matched against evidence title + detail + example
+// ═══════════════════════════════════════════════════
+// SVG icon helper — all icons use currentColor so they match the page theme
+const I = {
+  lock:    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+  doc:     `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+  search:  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+  chart:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  patch:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+  encrypt: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>`,
+  alert:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+  backup:  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.1L1 10"/></svg>`,
+  network: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="16" y="2" width="6" height="6" rx="1"/><rect x="9" y="16" width="6" height="6" rx="1"/><path d="M5 8v4h14V8M12 12v4"/></svg>`,
+  monitor: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+  handshake:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/></svg>`,
+  target:  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  grad:    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
+  pen:     `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
+  scale:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 9l9-6 9 6M3 15l9 6 9-6"/></svg>`,
+  key:     `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>`,
+  refresh: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>`,
+  tag:     `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`,
+  git:     `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>`,
+  door:    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M9 21V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v16"/><path d="M14 12h.01"/></svg>`,
+  shield:  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+  wrench:  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+  globe:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  trash:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`,
+};
+
+const OVERLAP_CATS = [
+  {key:"mfa",           icon:I.lock,     label:"Multi-Factor Authentication (MFA)",
+   kw:["mfa","multi-factor","conditional access","two-factor","2fa","phishing-resistant mfa","fido2","windows hello","authenticator"]},
+  {key:"policy",        icon:I.doc,      label:"Policies & Acknowledgement Records",
+   kw:["policy acknowledgement","staff policy","read and acknowledged","lms completion","policy register","signed forms","policy sign","acceptance"]},
+  {key:"access_review", icon:I.search,   label:"Access Reviews & Recertification",
+   kw:["access review","recertification","access rights review","review of who has","access recertification","periodic review of access","access card holder list"]},
+  {key:"logging_siem",  icon:I.chart,    label:"Centralised Logging & SIEM",
+   kw:["siem","centralised log","sentinel","splunk","elastic siem","log retention","log integrity","soc triage","security event","event log"]},
+  {key:"patch",         icon:I.patch,    label:"Patch & Vulnerability Management",
+   kw:["patch","vulnerability scan","patching","qualys","tenable","nessus","rapid7","wsus","sccm","remediation sla","patch compliance"]},
+  {key:"encryption",    icon:I.encrypt,  label:"Encryption (Data at Rest & In Transit)",
+   kw:["encrypt","aes","tls","ssl","bitlocker","filevault","full disk","fde","ipsec","https","sftp","cryptograph"]},
+  {key:"incident",      icon:I.alert,    label:"Incident Response Plans & Procedures",
+   kw:["incident response","irp","csirt","incident plan","incident playbook","incident log","incident severity","post-incident","pir","rca","lessons learned"]},
+  {key:"backup",        icon:I.backup,   label:"Backup, Recovery & Redundancy",
+   kw:["backup","restore","recovery","rto","rpo","business continuity","dr test","disaster recovery","redundan","offsite","immutable"]},
+  {key:"network_seg",   icon:I.network,  label:"Network Segmentation & Firewalls",
+   kw:["network segment","vlan","dmz","firewall","acl","network zone","inter-zone","segregation of network","lateral movement"]},
+  {key:"endpoint",      icon:I.monitor,  label:"Endpoint Protection & MDM",
+   kw:["endpoint","edr","mdm","intune","jamf","crowdstrike","defender","sentinelone","mobile device","uem","device compliance"]},
+  {key:"supplier",      icon:I.handshake,label:"Supplier & Third-Party Security",
+   kw:["supplier","third.party","vendor","outsourc","contractor","dpa","data processing agreement","caiq","supply chain","right to audit"]},
+  {key:"pentest",       icon:I.target,   label:"Penetration Testing & Security Audits",
+   kw:["penetration test","pentest","pen test","dast","sast","security test","vulnerability assessment","security audit","external audit","independent review","roe","rules of engagement"]},
+  {key:"training",      icon:I.grad,     label:"Security Awareness Training",
+   kw:["awareness training","security training","phishing simulation","knowbe4","proofpoint","lms","training completion","developer.*train","secure code.*warrior","owasp.*train"]},
+  {key:"nda",           icon:I.pen,      label:"NDAs & Confidentiality Agreements",
+   kw:["nda","non-disclosure","confidentiality agreement","signed.*agreement","employment contract.*is","is.*employment contract","post-employment"]},
+  {key:"risk",          icon:I.scale,    label:"Risk Assessments & Registers",
+   kw:["risk assessment","risk register","bia","business impact","dpia","data protection impact","threat model","risk rating","risk accept"]},
+  {key:"privileged",    icon:I.key,      label:"Privileged Access Management (PAM)",
+   kw:["privileged","pam","just-in-time","jit","admin account","cyberark","beyondtrust","azure pim","session record","elevated access","admin.*separate"]},
+  {key:"dr_bcp",        icon:I.refresh,  label:"Business Continuity & DR Testing",
+   kw:["bcp","business continuity","disaster recovery","dr test","failover test","continuity plan","dr plan","rto","rpo","ict readiness","disruption"]},
+  {key:"data_class",    icon:I.tag,      label:"Data Classification & Labelling",
+   kw:["classification","label","purview","sensitivity label","mip","public.*internal.*confidential","data classification","classification scheme","information classification"]},
+  {key:"change_mgmt",   icon:I.git,      label:"Change Management Process",
+   kw:["change management","change control","cab","change approval","change request","change ticket","change record","change advisory","change process"]},
+  {key:"physical_access",icon:I.door,    label:"Physical Access Controls",
+   kw:["physical access","access control system","card reader","biometric","visitor.*management","visitor.*sign","escort","cctv","access log","entry control","perimeter"]},
+  {key:"gdpr",          icon:I.shield,   label:"GDPR & Data Protection",
+   kw:["gdpr","dpa","data protection","privacy","ropa","record of processing","data subject","sar","erasure","dpo","privacy notice","personal.*data","ico"]},
+  {key:"vuln_mgmt",     icon:I.wrench,   label:"Vulnerability & Configuration Management",
+   kw:["hardening","cis benchmark","configuration baseline","cmdb","configuration management","secure baseline","configuration compliance","config.*scan"]},
+  {key:"web_filter",    icon:I.globe,    label:"Web & Email Filtering",
+   kw:["web filter","url filter","web.*gateway","proxy","zscaler","cisco umbrella","email.*filter","email.*gateway","mimecast","anti-spam","spam filter","malware.*filter"]},
+  {key:"disposal",      icon:I.trash,    label:"Secure Disposal & Media Destruction",
+   kw:["disposal","dispos","destruct","sanitisat","wipe","blancco","dban","weee","media.*destroy","secure.*erase","degauss"]},
+];
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let state = {};
+let soaState = {}; // { controlId: { applicable: bool, justification: string } }
+let activeTab = 'all';
+let activeFilter = 'all';
+let searchQuery = '';
+let overlapFilter = 'all';
+let overlapQuery = '';
+
+function init() {
+  loadProgress();
+  renderControls();
+  updateDashboard();
+}
+
+// ═══════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════
+function getChecked(ctrl){ return ctrl.ev.filter((_,i)=>state[`${ctrl.id}:${i}`]).length; }
+function getStatus(ctrl){ const ch=getChecked(ctrl); return ch===ctrl.ev.length?'complete':ch>0?'partial':'empty'; }
+
+// ═══════════════════════════════════════════════════
+// RENDER CONTROLS
+// ═══════════════════════════════════════════════════
+function renderControls(){
+  const list=document.getElementById('controlsList');
+  list.innerHTML='';
+  const themeF=(activeTab==='all'||activeTab==='gaps'||activeTab==='overlap')?null:activeTab;
+  CONTROLS.forEach(ctrl=>{
+    if(themeF&&ctrl.theme!==themeF)return;
+    const status=getStatus(ctrl);
+    if(activeFilter==='complete'&&status!=='complete')return;
+    if(activeFilter==='partial'&&status!=='partial')return;
+    if(activeFilter==='empty'&&status!=='empty')return;
+    if(searchQuery){
+      const q=searchQuery.toLowerCase();
+      if(!(ctrl.id.includes(q)||ctrl.title.toLowerCase().includes(q)||ctrl.desc.toLowerCase().includes(q)||ctrl.ev.some(e=>e.t.toLowerCase().includes(q)||e.d.toLowerCase().includes(q))))return;
+    }
+    const ch=getChecked(ctrl);
+    const card=document.createElement('div');
+    card.className=`control-card ${status}`;
+    card.id=`card-${ctrl.id}`;
+    card.innerHTML=`
+      <div class="control-header" onclick="toggleCard('${ctrl.id}')">
+        <span class="control-id">${ctrl.id}</span>
+        <div class="status-dot"></div>
+        <span class="control-title">${ctrl.title}</span>
+        <span class="ctrl-prog">${ch}/${ctrl.ev.length}</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="control-body">
+        <p class="control-desc">${ctrl.desc}</p>
+        <div class="ev-label">Evidence Required</div>
+        <div class="ev-list">
+          ${ctrl.ev.map((ev,i)=>{const k=`${ctrl.id}:${i}`;const ck=!!state[k];return`<div class="ev-item ${ck?'checked':''}" onclick="toggleEv('${ctrl.id}',${i},this)"><div class="ev-cb"><span class="ev-check">✓</span></div><div class="ev-content"><div class="ev-title">${ev.t}</div><div class="ev-detail">${ev.d}</div><div class="ev-example">${ev.ex}</div></div></div>`;}).join('')}
+        </div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.children.length){
+    list.innerHTML=`<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No controls match</div><div class="empty-sub">Adjust your search or filter</div></div>`;
+  }
+}
+
+function toggleCard(id){ document.getElementById(`card-${id}`).classList.toggle('open'); }
+
+function toggleEv(ctrlId,evIdx,el){
+  const k=`${ctrlId}:${evIdx}`;
+  state[k]=!state[k];
+  el.classList.toggle('checked',state[k]);
+  const ctrl=CONTROLS.find(c=>c.id===ctrlId);
+  const ch=getChecked(ctrl);
+  const status=getStatus(ctrl);
+  const card=document.getElementById(`card-${ctrlId}`);
+  card.className=`control-card ${status}${card.classList.contains('open')?' open':''}`;
+  card.querySelector('.ctrl-prog').textContent=`${ch}/${ctrl.ev.length}`;
+  updateDashboard();
+  autoSave();
+}
+
+// ═══════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════
+function updateDashboard(){
+  let totEv=0,chEv=0,complCtrl=0;
+  const th={org:[0,0],ppl:[0,0],phy:[0,0],tec:[0,0]};
+  CONTROLS.forEach(c=>{
+    const ch=getChecked(c),tot=c.ev.length;
+    totEv+=tot; chEv+=ch;
+    if(ch===tot) complCtrl++;
+    th[c.theme][0]+=ch; th[c.theme][1]+=tot;
+  });
+  const pct=totEv>0?Math.round(chEv/totEv*100):0;
+  const circ=219.9;
+  document.getElementById('ringFill').style.strokeDashoffset=circ-(pct/100)*circ;
+  document.getElementById('scorePct').textContent=pct+'%';
+  document.getElementById('scoreControls').textContent=`${complCtrl} / 93`;
+  document.getElementById('scoreEvidence').textContent=`${chEv} / ${totEv}`;
+  const gaps=CONTROLS.filter(c=>getChecked(c)<c.ev.length).length;
+  document.getElementById('scoreGaps').textContent=gaps;
+  document.getElementById('tc-gaps').textContent=gaps;
+  const ids={org:'Org',ppl:'Ppl',phy:'Phy',tec:'Tec'};
+  Object.entries(ids).forEach(([t,s])=>{
+    const [ch,tot]=th[t];
+    const p=tot>0?Math.round(ch/tot*100):0;
+    document.getElementById('b'+s).style.width=p+'%';
+    document.getElementById('p'+s).textContent=p+'%';
+  });
+  if(activeTab==='gaps') renderGapReport();
+  if(activeTab==='overlap') renderOverlap();
+}
+
+// ═══════════════════════════════════════════════════
+// GAP REPORT
+// ═══════════════════════════════════════════════════
+function renderGapReport(){
+  const crit=CONTROLS.filter(c=>getChecked(c)===0);
+  const part=CONTROLS.filter(c=>{const ch=getChecked(c);return ch>0&&ch<c.ev.length;});
+  const comp=CONTROLS.filter(c=>getChecked(c)===c.ev.length);
+  document.getElementById('gCrit').textContent=crit.length;
+  document.getElementById('gPart').textContent=part.length;
+  document.getElementById('gComp').textContent=comp.length;
+  const list=document.getElementById('gapList');
+  list.innerHTML='';
+
+  // ── Gaps (no evidence) ──
+  if(crit.length){
+    list.insertAdjacentHTML('beforeend',`<div class="gap-section-header"><span class="gap-section-dot dot-crit"></span><span class="gap-section-label">No Evidence Collected</span><span class="gap-section-count">${crit.length} controls</span></div>`);
+    crit.forEach(ctrl=>{
+      const item=document.createElement('div');
+      item.className='gap-item gap-crit';
+      item.innerHTML=`<div class="gap-item-hdr"><span class="gap-badge badge-crit">No Evidence</span><span class="gap-item-id">${ctrl.id}</span></div><div class="gap-item-title">${ctrl.title}</div>${ctrl.ev.map(ev=>`<div class="gap-miss"><strong>${ev.t}</strong> — ${ev.d} <span class="gap-miss-ex">${ev.ex}</span></div>`).join('')}`;
+      list.appendChild(item);
+    });
+  }
+
+  // ── Partial ──
+  if(part.length){
+    list.insertAdjacentHTML('beforeend',`<div class="gap-section-header"><span class="gap-section-dot dot-part"></span><span class="gap-section-label">Partially Evidenced</span><span class="gap-section-count">${part.length} controls</span></div>`);
+    part.forEach(ctrl=>{
+      const missing=ctrl.ev.filter((_,i)=>!state[`${ctrl.id}:${i}`]);
+      const collected=ctrl.ev.filter((_,i)=>state[`${ctrl.id}:${i}`]);
+      const item=document.createElement('div');
+      item.className='gap-item gap-part';
+      item.innerHTML=`
+        <div class="gap-item-hdr"><span class="gap-badge badge-part">Partial</span><span class="gap-item-id">${ctrl.id}</span></div>
+        <div class="gap-item-title">${ctrl.title}</div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--danger);margin:8px 0 4px">Still needed</div>
+        ${missing.map(ev=>`<div class="gap-miss"><strong>${ev.t}</strong> — ${ev.d} <span class="gap-miss-ex">${ev.ex}</span></div>`).join('')}
+        ${collected.length?`<div style="font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--success);margin:10px 0 4px">Already collected</div>
+        ${collected.map(ev=>`<div class="gap-ev-row"><span class="gap-ev-tick">✓</span><div class="gap-ev-text"><div class="gap-ev-title">${ev.t}</div><div class="gap-ev-ex">${ev.ex}</div></div></div>`).join('')}`:''}`;
+      list.appendChild(item);
+    });
+  }
+
+  // ── Fully evidenced ──
+  if(comp.length){
+    list.insertAdjacentHTML('beforeend',`<div class="gap-section-header"><span class="gap-section-dot dot-comp"></span><span class="gap-section-label">Fully Evidenced</span><span class="gap-section-count">${comp.length} controls</span></div>`);
+    comp.forEach(ctrl=>{
+      const item=document.createElement('div');
+      item.className='gap-item gap-comp';
+      item.innerHTML=`
+        <div class="gap-comp-toggle" onclick="this.closest('.gap-comp').classList.toggle('open')">
+          <div style="display:flex;align-items:center;gap:8px;flex:1">
+            <span class="gap-badge badge-comp">Complete</span>
+            <span class="gap-item-id">${ctrl.id}</span>
+          </div>
+          <div class="gap-item-title" style="flex:4;margin:0">${ctrl.title}</div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--success);margin-right:8px;flex-shrink:0">${ctrl.ev.length}/${ctrl.ev.length}</span>
+          <span class="gap-comp-chevron">▼</span>
+        </div>
+        <div class="gap-ev-collected">
+          ${ctrl.ev.map(ev=>`<div class="gap-ev-row"><span class="gap-ev-tick">✓</span><div class="gap-ev-text"><div class="gap-ev-title">${ev.t}</div><div class="gap-ev-ex">${ev.ex}</div></div></div>`).join('')}
+        </div>`;
+      list.appendChild(item);
+    });
+  }
+
+  if(!crit.length&&!part.length&&!comp.length){
+    list.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">Nothing to show yet</div><div class="empty-sub">Start ticking evidence in the controls tab to see your gap report.</div></div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// OVERLAP / EVIDENCE REUSE
+// ═══════════════════════════════════════════════════
+function buildOverlapMap(){
+  const map={};
+  CONTROLS.forEach(ctrl=>{
+    ctrl.ev.forEach((ev,i)=>{
+      const text=(ev.t+' '+ev.d+' '+ev.ex).toLowerCase();
+      OVERLAP_CATS.forEach(cat=>{
+        const hit=cat.kw.some(kw=>{ try{return new RegExp(kw,'i').test(text);}catch(e){return text.includes(kw);} });
+        if(hit){
+          if(!map[cat.key]) map[cat.key]=[];
+          map[cat.key].push({ctrl,evIdx:i,ev,checked:!!state[`${ctrl.id}:${i}`]});
+        }
+      });
+    });
+  });
+  // Only keep if spans 2+ controls
+  Object.keys(map).forEach(k=>{
+    const ctrlIds=new Set(map[k].map(x=>x.ctrl.id));
+    if(ctrlIds.size<2) delete map[k];
+  });
+  return map;
+}
+
+function renderOverlap(){
+  const map=buildOverlapMap();
+  const cats=OVERLAP_CATS.filter(c=>map[c.key]);
+  const total=cats.length;
+  const allCtrlIds=new Set();
+  cats.forEach(c=>map[c.key].forEach(x=>allCtrlIds.add(x.ctrl.id)));
+  const doneCats=cats.filter(c=>{const items=map[c.key];return items.every(x=>x.checked);}).length;
+
+  document.getElementById('tc-overlap').textContent=total;
+  document.getElementById('ovTotal').textContent=total;
+  document.getElementById('ovControls').textContent=allCtrlIds.size;
+  document.getElementById('ovDone').textContent=doneCats;
+
+  const container=document.getElementById('overlapCards');
+  container.innerHTML='';
+
+  const themeColors={org:'badge-org',ppl:'badge-ppl',phy:'badge-phy',tec:'badge-tec'};
+  const themeLabels={org:'Organisational',ppl:'People',phy:'Physical',tec:'Technological'};
+
+  cats.forEach(cat=>{
+    const items=map[cat.key];
+    const chCount=items.filter(x=>x.checked).length;
+    const isAll=chCount===items.length;
+    const isNone=chCount===0;
+
+    if(overlapFilter==='done'&&!isAll)return;
+    if(overlapFilter==='missing'&&!isNone)return;
+    if(overlapFilter==='partial'&&(isAll||isNone))return;
+    if(overlapQuery){
+      const q=overlapQuery.toLowerCase();
+      if(!cat.label.toLowerCase().includes(q)&&!items.some(x=>x.ctrl.title.toLowerCase().includes(q)||x.ev.t.toLowerCase().includes(q)))return;
+    }
+
+    const uniqueCtrlIds=[...new Set(items.map(x=>x.ctrl.id))];
+    const pct=Math.round(chCount/items.length*100);
+    const statusColor=isAll?'var(--success)':isNone?'var(--danger)':'var(--warn)';
+
+    // Group by control
+    const byCtrl={};
+    items.forEach(x=>{
+      if(!byCtrl[x.ctrl.id]) byCtrl[x.ctrl.id]={ctrl:x.ctrl,evs:[]};
+      byCtrl[x.ctrl.id].evs.push(x);
+    });
+
+    const card=document.createElement('div');
+    card.className='ov-card';
+    card.innerHTML=`
+      <div class="ov-card-header" onclick="toggleOvCard(this)">
+        <div class="ov-cat-icon">${cat.icon}</div>
+        <div class="ov-cat-main">
+          <div class="ov-cat-title">${cat.label}</div>
+          <div class="ov-cat-sub">Applies to ${uniqueCtrlIds.length} control${uniqueCtrlIds.length>1?'s':''} &nbsp;·&nbsp; ${chCount} of ${items.length} items collected</div>
+        </div>
+        <div class="ov-card-right">
+          <div class="ov-pct-block">
+            <div class="ov-pct" style="color:${statusColor}">${pct}%</div>
+            <div class="ov-pct-label">collected</div>
+          </div>
+          <div class="ov-ctrl-pill" style="color:${statusColor};border-color:${statusColor};background:${isAll?'var(--success-dim)':isNone?'var(--danger-dim)':'var(--warn-dim)'}">${uniqueCtrlIds.length}</div>
+        </div>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="ov-card-body">
+        <div class="ov-tip">💡 <strong>Efficiency tip:</strong> Collect this evidence once and reference it across all ${uniqueCtrlIds.length} controls. Mark items individually in the Controls tab.</div>
+        <div>
+          ${Object.values(byCtrl).map(group=>`
+            <div class="ov-ctrl-group">
+              <div class="ov-ctrl-group-header">
+                <span class="ov-ctrl-badge ${themeColors[group.ctrl.theme]||''}">${group.ctrl.id}</span>
+                <span class="ov-ctrl-name">${group.ctrl.title}</span>
+              </div>
+              ${group.evs.map(x=>`
+                <div class="ov-ev-row">
+                  <div><div class="ov-ev-title">${x.ev.t}</div><div class="ov-ev-ex">${x.ev.ex}</div></div>
+                  <span class="status-pill ${x.checked?'pill-done':'pill-miss'}">${x.checked?'✓ Collected':'✗ Missing'}</span>
+                </div>`).join('')}
+            </div>`).join('')}
+        </div>
+      </div>`;
+    container.appendChild(card);
+  });
+
+  if(!container.children.length){
+    container.innerHTML=`<div class="empty-state"><div class="empty-icon">🔗</div><div class="empty-title">No matches</div><div class="empty-sub">Try adjusting your search or filter.</div></div>`;
+  }
+}
+
+function toggleOvCard(hdr){ hdr.closest('.ov-card').classList.toggle('open'); }
+function setOverlapFilter(f,el){ overlapFilter=f; document.querySelectorAll('#panelOverlap .filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderOverlap(); }
+function filterOverlap(q){ overlapQuery=q; renderOverlap(); }
+
+// ═══════════════════════════════════════════════════
+// TAB / FILTER / SEARCH
+// ═══════════════════════════════════════════════════
+function switchTab(tab,el){
+  activeTab=tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panelControls').classList.add('hidden');
+  document.getElementById('panelOverlap').classList.add('hidden');
+  document.getElementById('panelGaps').classList.add('hidden');
+  document.getElementById('panelSoa').classList.add('hidden');
+  if(tab==='gaps'){ document.getElementById('panelGaps').classList.remove('hidden'); renderGapReport(); }
+  else if(tab==='overlap'){ document.getElementById('panelOverlap').classList.remove('hidden'); renderOverlap(); }
+  else if(tab==='soa'){ document.getElementById('panelSoa').classList.remove('hidden'); renderSoa(); }
+  else{ document.getElementById('panelControls').classList.remove('hidden'); renderControls(); }
+}
+function setFilter(f,el){ activeFilter=f; document.querySelectorAll('#panelControls .filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderControls(); }
+function filterSearch(q){ searchQuery=q; renderControls(); }
+
+// ═══════════════════════════════════════════════════
+// SAVE / LOAD / RESET
+// ═══════════════════════════════════════════════════
+function saveProgress(){
+  try{
+    localStorage.setItem('ar2_state',JSON.stringify(state));
+    localStorage.setItem('ar2_soa',JSON.stringify(soaState));
+    showToast('✅ Progress saved!');
+  }catch(e){showToast('⚠️ Save unavailable');}
+}
+function autoSave(){
+  try{
+    localStorage.setItem('ar2_state',JSON.stringify(state));
+    localStorage.setItem('ar2_soa',JSON.stringify(soaState));
+  }catch(e){}
+}
+function loadProgress(){
+  try{
+    const s=localStorage.getItem('ar2_state'); if(s) state=JSON.parse(s);
+    const soa=localStorage.getItem('ar2_soa'); if(soa) soaState=JSON.parse(soa);
+    if(s||soa) showToast('📂 Progress restored');
+  }catch(e){}
+}
+function resetAll(){
+  if(!confirm('Reset all progress including SoA? This cannot be undone.'))return;
+  state={}; soaState={};
+  try{localStorage.removeItem('ar2_state');localStorage.removeItem('ar2_soa');}catch(e){}
+  renderControls(); updateDashboard();
+  if(activeTab==='soa') renderSoa();
+  showToast('↺ Progress reset');
+}
+
+// ═══════════════════════════════════════════════════
+// PDF EXPORT
+// ═══════════════════════════════════════════════════
+function exportPDF(){
+  const crit=CONTROLS.filter(c=>getChecked(c)===0);
+  const part=CONTROLS.filter(c=>{const ch=getChecked(c);return ch>0&&ch<c.ev.length;});
+  const comp=CONTROLS.filter(c=>getChecked(c)===c.ev.length);
+  const totEv=CONTROLS.reduce((s,c)=>s+c.ev.length,0);
+  const chEv=CONTROLS.reduce((s,c)=>s+getChecked(c),0);
+  const pct=Math.round(chEv/totEv*100);
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>AuditReady — ISO 27001 Gap Report</title>
+  <style>body{font-family:Georgia,serif;max-width:820px;margin:40px auto;color:#1e293b;font-size:14px;line-height:1.65}
+  h1{font-size:26px;margin-bottom:4px;letter-spacing:-.3px}
+  .meta{color:#64748b;font-size:13px;margin-bottom:28px}
+  .stats{display:flex;gap:16px;margin-bottom:28px}
+  .stat{border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;text-align:center;flex:1;background:#f8fafc}
+  .sv{font-size:26px;font-weight:bold;margin-bottom:2px}
+  .sl{font-size:11px;color:#64748b}
+  h2{font-size:16px;margin:24px 0 12px;padding-bottom:6px;border-bottom:2px solid #1e293b}
+  .item{margin-bottom:14px;padding:13px;border:1px solid #e2e8f0;border-radius:6px;page-break-inside:avoid}
+  .item.crit{border-left:4px solid #b91c1c}
+  .item.part{border-left:4px solid #b45309}
+  .iid{font-size:11px;color:#94a3b8;font-family:monospace;margin-bottom:2px}
+  .ititle{font-weight:bold;margin-bottom:8px;color:#1e293b}
+  .miss{font-size:12px;margin:4px 0;padding-left:14px;position:relative;color:#475569}
+  .miss::before{content:"→ ";position:absolute;left:0;color:#b91c1c}
+  .part .miss::before{color:#b45309}
+  .ex{color:#94a3b8;font-family:monospace;font-size:11px}
+  .complist{font-size:12px;columns:2;gap:20px;color:#475569}
+  .complist div{margin-bottom:3px}
+  @media print{body{margin:20px}}</style></head><body>
+  <h1>AuditReady — ISO 27001:2022 Gap Report</h1>
+  <div class="meta">Generated ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})} &nbsp;·&nbsp; Overall: ${pct}% compliance &nbsp;·&nbsp; ${chEv} of ${totEv} evidence items</div>
+  <div class="stats">
+    <div class="stat"><div class="sv" style="color:#b91c1c">${crit.length}</div><div class="sl">No evidence</div></div>
+    <div class="stat"><div class="sv" style="color:#b45309">${part.length}</div><div class="sl">Partial</div></div>
+    <div class="stat"><div class="sv" style="color:#0d7377">${comp.length}</div><div class="sl">Complete</div></div>
+    <div class="stat"><div class="sv">${pct}%</div><div class="sl">Score</div></div>
+  </div>
+  ${crit.length?`<h2>🔴 Controls with No Evidence (${crit.length})</h2>${crit.map(c=>`<div class="item crit"><div class="iid">${c.id}</div><div class="ititle">${c.title}</div>${c.ev.map(e=>`<div class="miss">${e.t} <span class="ex">${e.ex}</span></div>`).join('')}</div>`).join('')}`:''}
+  ${part.length?`<h2>🟡 Partially Evidenced Controls (${part.length})</h2>${part.map(c=>{const ms=c.ev.filter((_,i)=>!state[`${c.id}:${i}`]);return`<div class="item part"><div class="iid">${c.id}</div><div class="ititle">${c.title}</div>${ms.map(e=>`<div class="miss">${e.t} <span class="ex">${e.ex}</span></div>`).join('')}</div>`;}).join('')}`:''}
+  ${comp.length?`<h2>✅ Fully Evidenced Controls (${comp.length})</h2><div class="complist">${comp.map(c=>`<div>• ${c.id} — ${c.title}</div>`).join('')}</div>`:''}
+  <script>window.onload=function(){window.print();}<\/script></body></html>`);
+  win.document.close();
+}
+
+// ═══════════════════════════════════════════════════
+// STATEMENT OF APPLICABILITY
+// ═══════════════════════════════════════════════════
+function getSoaEntry(id){
+  if(!soaState[id]) soaState[id]={applicable:true,justification:''};
+  return soaState[id];
+}
+
+function toggleApplicability(id){
+  const e=getSoaEntry(id);
+  e.applicable=!e.applicable;
+  autoSave();
+  renderSoa();
+}
+
+function saveJustification(id,val){
+  getSoaEntry(id).justification=val;
+  autoSave();
+  updateSoaStats();
+}
+
+function updateSoaStats(){
+  const applicable=CONTROLS.filter(c=>getSoaEntry(c.id).applicable).length;
+  const na=93-applicable;
+  const justified=CONTROLS.filter(c=>!getSoaEntry(c.id).applicable&&getSoaEntry(c.id).justification.trim().length>0).length;
+  document.getElementById('soaApplicable').textContent=applicable;
+  document.getElementById('soaNa').textContent=na;
+  document.getElementById('soaJustified').textContent=justified;
+  document.getElementById('tc-soa').textContent=`${applicable} / 93`;
+}
+
+function renderSoa(){
+  const themes=[
+    {key:'org', icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`, label:'Organisational Controls',clause:'Clause 5'},
+    {key:'ppl', icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`, label:'People Controls',clause:'Clause 6'},
+    {key:'phy', icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`, label:'Physical Controls',clause:'Clause 7'},
+    {key:'tec', icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`, label:'Technological Controls',clause:'Clause 8'},
+  ];
+  const container=document.getElementById('soaList');
+  container.innerHTML='';
+
+  themes.forEach(theme=>{
+    const controls=CONTROLS.filter(c=>c.theme===theme.key);
+    const appCount=controls.filter(c=>getSoaEntry(c.id).applicable).length;
+
+    const block=document.createElement('div');
+    block.className='soa-theme-block';
+    block.innerHTML=`<div class="soa-theme-header">
+      <span class="soa-theme-icon">${theme.icon}</span>
+      <span class="soa-theme-title">${theme.label} <span style="color:var(--text3);font-weight:400;font-size:12px">· ${theme.clause}</span></span>
+      <span class="soa-theme-sub">${appCount} / ${controls.length} applicable</span>
+    </div>`;
+
+    controls.forEach(ctrl=>{
+      const e=getSoaEntry(ctrl.id);
+      const row=document.createElement('div');
+      row.className=`soa-row${e.applicable?'':' na'}`;
+      row.id=`soa-row-${ctrl.id}`;
+      row.innerHTML=`
+        <div class="soa-toggle-cell" title="${e.applicable?'Mark as Not Applicable':'Mark as Applicable'}">
+          <button class="soa-applicability-toggle ${e.applicable?'on':''}" onclick="toggleApplicability('${ctrl.id}')"></button>
+        </div>
+        <div class="soa-ctrl-info" onclick="this.closest('.soa-row').classList.toggle('expanded')">
+          <div class="soa-ctrl-top">
+            <span class="soa-ctrl-id">${ctrl.id}</span>
+            <span class="soa-ctrl-title">${ctrl.title}</span>
+          </div>
+          <div class="soa-ctrl-desc">${ctrl.desc}</div>
+        </div>
+        <div class="soa-justification-cell">
+          ${e.applicable
+            ? `<span style="font-size:12px;color:var(--success);font-weight:500">✓ Applicable</span>`
+            : `<textarea class="soa-justification-input" placeholder="Justification for exclusion…" oninput="saveJustification('${ctrl.id}',this.value)">${e.justification}</textarea>`
+          }
+        </div>`;
+      block.appendChild(row);
+    });
+
+    container.appendChild(block);
+  });
+
+  updateSoaStats();
+}
+
+function exportSoaPDF(){
+  const themeLabels={org:'Organisational',ppl:'People',phy:'Physical',tec:'Technological'};
+  const applicable=CONTROLS.filter(c=>getSoaEntry(c.id).applicable);
+  const na=CONTROLS.filter(c=>!getSoaEntry(c.id).applicable);
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Statement of Applicability — ISO 27001:2022</title>
+  <style>
+    body{font-family:Georgia,serif;max-width:900px;margin:40px auto;color:#1e293b;font-size:13px;line-height:1.6}
+    h1{font-size:24px;margin-bottom:4px;letter-spacing:-.3px}
+    .meta{color:#64748b;font-size:12px;margin-bottom:8px}
+    .org{color:#64748b;font-size:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid #e2e8f0}
+    .stats{display:flex;gap:16px;margin-bottom:28px}
+    .stat{border:1px solid #e2e8f0;border-radius:6px;padding:12px 18px;text-align:center;flex:1;background:#f8fafc}
+    .sv{font-size:22px;font-weight:bold;margin-bottom:2px}
+    .sl{font-size:11px;color:#64748b}
+    h2{font-size:14px;margin:22px 0 8px;padding:6px 0;border-bottom:2px solid #1e293b;display:flex;justify-content:space-between}
+    table{width:100%;border-collapse:collapse;margin-bottom:8px;font-size:12px}
+    th{background:#f1f5f9;padding:7px 10px;text-align:left;border:1px solid #e2e8f0;font-weight:600;font-size:11px;letter-spacing:.5px}
+    td{padding:7px 10px;border:1px solid #e2e8f0;vertical-align:top}
+    tr.app td{background:#fff}
+    tr.na td{background:#fafafa;color:#64748b}
+    .badge-app{background:#dcfce7;color:#166534;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600}
+    .badge-na{background:#f1f5f9;color:#64748b;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600}
+    .just{font-style:italic;color:#7c3aed;font-size:11px}
+    @media print{body{margin:20px}h2{page-break-before:auto}}
+  </style></head><body>
+  <h1>Statement of Applicability</h1>
+  <div class="meta">ISO/IEC 27001:2022 — Annex A Controls</div>
+  <div class="org">Organisation: __________________________ &nbsp;&nbsp; Prepared by: __________________________ &nbsp;&nbsp; Date: ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})} &nbsp;&nbsp; Version: 1.0</div>
+  <div class="stats">
+    <div class="stat"><div class="sv">${CONTROLS.length}</div><div class="sl">Total controls</div></div>
+    <div class="stat"><div class="sv" style="color:#2e6da4">${applicable.length}</div><div class="sl">Applicable</div></div>
+    <div class="stat"><div class="sv" style="color:#64748b">${na.length}</div><div class="sl">Not Applicable</div></div>
+    <div class="stat"><div class="sv" style="color:#7c3aed">${na.filter(c=>getSoaEntry(c.id).justification.trim()).length}</div><div class="sl">With justification</div></div>
+  </div>
+  ${['org','ppl','phy','tec'].map(theme=>{
+    const controls=CONTROLS.filter(c=>c.theme===theme);
+    const clauseNum={org:'5',ppl:'6',phy:'7',tec:'8'}[theme];
+    return `<h2><span>${themeLabels[theme]} Controls (Clause ${clauseNum})</span><span style="font-size:12px;font-weight:400;color:#64748b">${controls.filter(c=>getSoaEntry(c.id).applicable).length}/${controls.length} applicable</span></h2>
+    <table>
+      <tr><th style="width:7%">Control</th><th style="width:30%">Title</th><th style="width:11%">Status</th><th>Justification / Notes</th></tr>
+      ${controls.map(c=>{
+        const e=getSoaEntry(c.id);
+        return `<tr class="${e.applicable?'app':'na'}">
+          <td style="font-family:monospace">${c.id}</td>
+          <td>${c.title}</td>
+          <td><span class="${e.applicable?'badge-app':'badge-na'}">${e.applicable?'Applicable':'Not Applicable'}</span></td>
+          <td>${e.applicable?'<span style="color:#94a3b8;font-size:11px">—</span>':e.justification?`<span class="just">${e.justification}</span>`:'<span style="color:#ef4444;font-size:11px">⚠ Justification required</span>'}</td>
+        </tr>`;
+      }).join('')}
+    </table>`;
+  }).join('')}
+  <script>window.onload=function(){window.print();}<\/script>
+  </body></html>`);
+  win.document.close();
+}
+
+// ═══════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
+
+init();
+</script>
+</body>
+</html>
