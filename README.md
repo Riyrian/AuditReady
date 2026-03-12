@@ -9,13 +9,13 @@ A fully offline, single-file browser tool to help organisations track and prepar
 
 ---
 
-## 🖼️ Overview
+## Overview
 
 AuditReady walks you through all **93 controls** across the four ISO 27001:2022 Annex A themes and helps you record what evidence you have collected for each one. A live dashboard tracks your overall readiness score in real time.
 
 ---
 
-## ✨ Features
+## Features
 
 - **Full ISO 27001:2022 control coverage** — all 93 Annex A controls across Organisational, People, Physical and Technological themes
 - **Evidence checklist per control** — each control has pre-defined evidence items with practical examples (e.g. specific tools, document names, screenshots)
@@ -30,30 +30,7 @@ AuditReady walks you through all **93 controls** across the four ISO 27001:2022 
 - **Zero dependencies** — pure HTML, CSS and vanilla JavaScript; works entirely offline
 
 ---
-
-## 🚀 Getting Started
-
-### Option 1 — Run locally (simplest)
-
-1. Download `auditready.html`
-2. Open it in any modern browser (Chrome, Firefox, Edge, Safari)
-3. Start ticking off evidence — progress is saved automatically
-
-### Option 2 — Host on GitHub Pages
-
-1. Fork or clone this repository
-2. Go to **Settings → Pages**
-3. Set the source branch to `main` and folder to `/root`
-4. Your tool will be live at:
-   ```
-   https://<your-username>.github.io/<repo-name>/auditready.html
-   ```
-
-> **Tip:** Rename the file to `index.html` to get a cleaner URL without the filename.
-
----
-
-## 📁 File Structure
+## File Structure
 
 ```
 .
@@ -64,7 +41,7 @@ Everything (HTML, CSS, JavaScript, control data) lives in a single file. No buil
 
 ---
 
-## 🗂️ ISO 27001:2022 Themes Covered
+## ISO 27001:2022 Themes Covered
 
 | Theme | Controls | Examples |
 |---|---|---|
@@ -75,7 +52,7 @@ Everything (HTML, CSS, JavaScript, control data) lives in a single file. No buil
 
 ---
 
-## 🔁 Cross-Cutting Evidence Tracker
+## Cross-Cutting Evidence Tracker
 
 The **Overlaps** tab highlights 24 recurring evidence types that appear across multiple controls simultaneously, such as:
 
@@ -93,7 +70,7 @@ This helps you avoid duplicating effort and quickly see which investments in too
 
 ---
 
-## 💾 Data & Privacy
+## Data & Privacy
 
 All data is stored exclusively in your **browser's local storage**. Nothing is transmitted to any server. This makes AuditReady safe to use with sensitive audit information.
 
@@ -101,7 +78,7 @@ To back up your progress, use the **Export JSON** button. To restore it on anoth
 
 ---
 
-## 🛠️ Browser Support
+## Browser Support
 
 Any modern browser with ES6+ support:
 
@@ -111,13 +88,13 @@ Any modern browser with ES6+ support:
 
 ---
 
-## 📄 License
+## License
 
 MIT — free to use, modify and distribute.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome. If a control mapping is incorrect, an evidence example is outdated, or you'd like to add a new feature, please open an issue or submit a pull request.
 
