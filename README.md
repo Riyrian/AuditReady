@@ -105,6 +105,6 @@ Contributions are welcome. If a control mapping is incorrect, an evidence exampl
 
 ---
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 This tool is designed to assist with audit preparation. It does not guarantee ISO 27001 certification and should be used alongside advice from a qualified ISO 27001 Lead Auditor or consultant.
